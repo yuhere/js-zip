@@ -1,0 +1,42 @@
+{
+    "name": "@yuhere/js-zip",
+    "type": "module",
+    "description": "utility library for reading and writing zip files in browser.",
+    "version": "0.0.1",
+    "publisher": "yuhere",
+    "repository": "https://github.com/yuhere/js-zip.git",
+    "license": "MIT",
+    "main": "lib/index.js",
+    "module": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "bin/",
+        "lib/",
+        "src/",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "npm-run-all -p build:*",
+        "build:rollup": "rollup --config rollup.config.js",
+        "build-pending:types": "tsc -p tsconfig.types.json",
+        "lint": "eslint src",
+        "test": "npm run build && npx c8 mocha"
+    },
+    "devDependencies": {
+        "@types/chai": "^5.2.3",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^24.6.1",
+        "@typescript-eslint/eslint-plugin": "^7.14.1",
+        "@typescript-eslint/parser": "^7.11.0",
+        "c8": "^10.1.3",
+        "chai": "^4.3.7",
+        "eslint": "^8.57.0",
+        "mocha": "^10.2.0",
+        "npm-run-all": "^4.1.5",
+        "rollup": "^4.53.3",
+        "rollup-plugin-esbuild": "^6.2.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3"
+    }
+}
