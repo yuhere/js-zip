@@ -4,71 +4,94 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-`@yuhere/js-zip` — a browser-only JavaScript library for creating and reading `.zip` files. Forked from an early version of [zip.js](https://github.com/gildas-lormeau/zip.js) and substantially modified: Web Worker support was removed, and streaming/chunked read/write was added for large files. Used in the "Chrome extension source viewer" extension for CRX file compression/decompression.
+`@yuhere/js-zip` — a JavaScript library for creating and reading `.zip` files, forked from [zip.js](https://github.com/gildas-lormeau/zip.js) (v2025). Used in the "Chrome extension source viewer" extension for CRX file compression/decompression. Targets browser, Node.js, Deno, and Bun.
 
 ## Commands
 
 ```bash
-npm run build          # Rollup bundle (src/ → lib/index.js)
+npm run build          # Rollup bundle (src/ → lib/, preserveModules)
 npm run lint           # ESLint on src/
-npm test               # Build then run Mocha tests with c8 coverage
+npm test               # Build, then run tests with c8 coverage
+npm run test-node      # Same as above (build + c8 + node:test)
+npm run test-deno      # Run tests with Deno
+npm run test-bun       # Run tests with Bun
+npm run test-firefox   # Run browser tests in Firefox
+npm run test-chrome    # Run browser tests in Chrome
 ```
 
-- Tests are written in TypeScript with Mocha + Chai, run via `tsx` (no compilation needed).
-- Test files: `test/*.spec.ts` (the test directory currently has no files).
-- Coverage thresholds (c8): 80% lines/functions/statements, 70% branches.
+- `npm test` builds with Rollup then runs all 85 tests via `node:test` with c8 coverage collection. Coverage is collected from `src/**/*` (tests import source directly, not the built lib/).
+- Coverage thresholds (c8): 60% lines/functions/branches/statements. Reports in `coverage/` (text, HTML, lcov).
+- The test runner (`tests/node-runner.js`) runs from the repo root. It mocks `fetch` using `node:fs` to serve files from `tests/data/`.
+- Test files: `tests/all/test-*.js`. Test registry: `tests/tests-data.js`. Add new tests by adding an entry there and creating the script.
+- Rollup config uses `preserveModules: true` — each source module becomes a separate file in `lib/`.
 
 ## Architecture
 
 ```
 src/
-  index.ts      → Public API (both callback-style and Promise wrappers)
-  zip.ts        → Core ZIP engine: Reader/Writer abstractions, entry parsing, central directory
-  deflate.ts    → Deflate compression (JZlib/zlib port, ~2000 lines)
-  inflate.ts    → Inflate decompression (JZlib/zlib port, ~2150 lines)
+  index.js              → Entry point, re-exports everything from src/zip-js/
+  zip-js/
+    index.js            → Public API surface (re-exports from zip-core + zip-fs)
+    zip-core.js         → Re-exports reader, writer, I/O classes, configure
+    zip-core-reader.js  → ZipReader export
+    zip-core-writer.js  → ZipWriter export
+    core/
+      configuration.js  → configure() for global settings
+      constants.js      → Constants (error messages, signatures, etc.)
+      io.js             → Reader/Writer I/O classes (BlobReader, HttpReader, etc.)
+      options.js        → Option handling utilities
+      codec.js          → Compression codec registry
+      zip-reader.js     → ZipReader implementation (~890 lines)
+      zip-writer.js     → ZipWriter implementation (~1570 lines)
+      zip-entry.js      → ZipEntry class
+      zip-fs.js         → ZipFS filesystem abstraction (~880 lines)
+      streams/          → Stream implementations (AES crypto, zip crypto, CRC32, zlib, codec)
+      util/             → Text encoding (UTF-8, CP437)
 ```
+
+Root `index.js` is a convenience re-export of `src/index.js`.
 
 ### Build pipeline
 
-Rollup (`rollup.config.js`) bundles `src/index.ts` into `lib/index.js` (ESM format). The `rollup-plugin-esbuild` plugin handles TypeScript stripping — Rollup itself does no type checking. Type declarations are generated separately via `tsc -p tsconfig.types.json` (the `build-pending:types` script, currently not in the default build pipeline).
+Rollup (`rollup.config.js`) bundles `src/index.js` → `lib/` with `preserveModules: true`, keeping each module as a separate file. The `rollup-plugin-esbuild` plugin handles JS/TS transpilation targeting ES2022.
 
-### Public API layers (index.ts)
+### Public API
 
-**Callback-based** — the original API, for single-shot zip operations:
-- `zipBlob(fset, callback, onerror, progress)` — write a zip from `[{fn, blob}, ...]`
-- `unzipBlob(fn, blob, callback, onerror)` — read a specific named entry from a zip Blob
+**Core classes** (from `zip-core.js`):
+- `ZipReader` — read zip files. Constructor takes a `Reader` instance. Methods: `getEntries()`, `close()`.
+- `ZipWriter` — write zip files. Constructor takes a `Writer` instance. Methods: `add(name, reader, options?)`, `close()`.
+- `configure(config)` — global configuration (e.g., `workerScripts`, `useWebWorkers`).
 
-**Promise-based** (`*5` suffix) — thin wrappers around the callback versions:
-- `zipBlob5(fset, progress)` → `Promise<Blob>`
-- `unzipBlob5(fn, blob)` → `Promise<Blob>`
+**I/O classes** (from `io.js`):
+- **Readers**: `Reader`, `TextReader`, `BlobReader`, `Data64URIReader`, `Uint8ArrayReader`, `HttpReader`, `HttpRangeReader`, `SplitDataReader`
+- **Writers**: `Writer`, `TextWriter`, `BlobWriter`, `Data64URIWriter`, `Uint8ArrayWriter`, `SplitDataWriter`
 
-**Streaming/batch API** — for large files, avoid loading everything into memory:
-- `createWriter()` → `addToZip(writer, {fn, blob})` per file → `closeWriter(writer)` → zipped Blob
-- `createReader(blob)` → `getFileEntries(reader, filter?)` → `getEntryData(reader, entry)` per entry → `closeReader(reader)`
+**Filesystem API** (from `zip-fs.js`):
+- `ZipFS` / `FS` — high-level filesystem-like interface for reading/writing zip files. Supports import/export, add/remove/replace entries, directory traversal.
+- `ZipDirectoryEntry` / `ZipFileEntry` — entry types with metadata (date, comment, Unix/MS-DOS attributes).
 
-### Core ZIP engine (zip.ts)
+### Stream architecture
 
-A self-contained IIFE (~830 lines) that exports a single `zip` object with:
+The `core/streams/` directory contains transform stream implementations:
+- `codec-stream.js` — compression/decompression stream using registered codecs
+- `zip-entry-stream.js` — stream for individual zip entries
+- `zlib-js/zlib-streams.js` — zlib deflate/inflate streams (~2700 lines)
+- `crc32-stream.js` — CRC32 checksum stream
+- `aes-crypto-stream.js`, `zip-crypto-stream.js`, `common-crypto.js` — encryption streams
+- `codecs/crc32.js`, `codecs/sjcl.js` — low-level crypto/codec implementations
 
-- **Reader hierarchy**: `Reader` → `BlobReader`, `TextReader`, `Data64URIReader` — all implement `init(callback)` + `readUint8Array(index, length, callback, onerror)`.
-- **Writer hierarchy**: `Writer` → `BlobWriter`, `TextWriter`, `Data64URIWriter` — all implement `init(callback)`, `writeUint8Array(array, callback)`, `getData(callback)`.
-- **ZipReader** (`createZipReader`): seeks the End of Central Directory Record (EOCDR) backwards from the end of the blob, parses central directory entries, and exposes `Entry.getData(writer, onend)` to decompress individual entries.
-- **ZipWriter** (`createZipWriter`): accumulates entries, writes local file headers + data, then writes the central directory and EOCDR on `close()`.
-- **Compression plumbing**: `inflate()` and `deflate()` call into `Inflater`/`Deflater` classes (imported from deflate.ts/inflate.ts). The `zip.useWebWorkers` flag (default `false`) would use Web Workers, but this path is effectively dead code since the flag is never set true.
-- **Chunked I/O**: `copy()`, `launchProcess()` process data in 512KB chunks to avoid blocking the main thread on large files.
+### Test setup
 
-### Deflate/Inflate (deflate.ts, inflate.ts)
-
-Ports of JZlib 1.0.2 (which itself is based on zlib 1.1.3). These are classic zlib implementations with:
-
-- `Deflater(level?)`: `append(data)` compresses a chunk, `flush()` finalizes.
-- `Inflater()`: `append(data)` decompresses a chunk, `flush()` cleans up.
-
-Both use an internal `ZStream` abstraction that reads from `next_in` and writes to `next_out` via `read_buf`/`flush_pending`.
+- `tests/tests-data.js` — registry of all test scripts with titles and optional env filters.
+- `tests/node-runner.js` — Node.js runner using `node:test` with `fetch` mocked via `node:fs`.
+- `tests/web-runner.js` — browser runner using iframes.
+- `tests/deno-runner.js`, `tests/bun-runner.js` — Deno and Bun runners.
+- `tests/data/` — test fixture files (sample zips, lorem text).
+- `tests/all/loader.html` — HTML loader for browser test iframes.
 
 ### Configuration notes
 
 - **ESM only**: `"type": "module"` in package.json. All source uses ES import/export.
-- **No tsconfig.json for compilation** — only `tsconfig.types.json` for declaration emit. The build doesn't type-check.
-- **Coverage**: `.c8rc.json` covers `src/**/*` (excludes test/node_modules), `.nycrc.json` excludes `src/arrays.ts` (which likely doesn't exist).
-- **CI**: `.github/workflows/npm-publish.yml` handles npm publishing (details not inspected — read if publishing is needed).
+- **TypeScript**: Dev dependencies include TypeScript and types for tooling, but the source is plain `.js`. `tsconfig.types.json` exists for declaration emit only.
+- **Coverage**: `.c8rc.json` covers `src/**/*`, excludes `node_modules/**`.
+- **CI**: `.github/workflows/npm-publish.yml` handles npm publishing.
