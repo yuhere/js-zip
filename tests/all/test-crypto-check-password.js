@@ -34,7 +34,7 @@ async function test() {
 		}
 	}
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (undefinedData !== undefined || data !== TEXT_CONTENT) {
 		throw new Error();
 	}

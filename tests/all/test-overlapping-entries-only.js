@@ -20,6 +20,6 @@ async function test() {
 		}
 	} finally {
 		await zipReader.close();
-		await zip.terminateWorkers();
+		console.log("zip.terminateWorkers()");
 	}
 }

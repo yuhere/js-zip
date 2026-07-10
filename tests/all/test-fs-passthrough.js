@@ -50,7 +50,7 @@ async function test() {
 	directory = zipFs.getChildByName("import-uncompressed");
 	firstEntry = directory.children[0];
 	text = await firstEntry.getText(null, { checkSignature: true });
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (text != TEXT_CONTENT || firstEntry.uncompressedSize != TEXT_CONTENT.length) {
 		throw new Error();
 	}

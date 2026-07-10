@@ -19,7 +19,7 @@ async function test() {
 	const dataBlobWriter = new zip.BlobWriter(zip.getMimeType(entries[0].filename));
 	const data = await entries[0].getData(dataBlobWriter, { rawPassword: new Uint8Array([0xce, 0xd2, 0xca, 0xc7, 0xc3, 0xdc, 0xb4, 0x61]) });
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (TEXT_CONTENT != await data.text()) {
 		throw new Error();
 	}

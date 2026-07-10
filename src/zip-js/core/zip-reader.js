@@ -87,14 +87,18 @@ import {
 	getConfiguration,
 	getChunkSize
 } from "./configuration.js";
+
 import {
-	runWorker,
+	codec
+} from "./codec.js";
+import {
 	CODEC_INFLATE,
 	ERR_INVALID_SIGNATURE,
-	ERR_INVALID_PASSWORD,
 	ERR_INVALID_UNCOMPRESSED_SIZE,
+	ERR_INVALID_PASSWORD,
 	ERR_ABORT_CHECK_PASSWORD
-} from "./codec-pool.js";
+} from "./streams/codec-stream.js";
+
 import {
 	initStream,
 	readUint8Array,
@@ -558,7 +562,7 @@ class ZipEntry {
 		if (deflate64) {
 			useCompressionStream = false;
 		}
-		const workerOptions = {
+		const codecOptions = {
 			options: {
 				codecType: CODEC_INFLATE,
 				password,
@@ -571,7 +575,6 @@ class ZipEntry {
 				signature,
 				compressed: compressionMethod != 0 && !passThrough,
 				encrypted: zipEntry.encrypted && !passThrough,
-				useWebWorkers: getOptionValue(zipEntry, options, OPTION_USE_WEB_WORKERS),
 				useCompressionStream,
 				transferStreams: getOptionValue(zipEntry, options, OPTION_TRANSFER_STREAMS),
 				deflate64,
@@ -604,7 +607,7 @@ class ZipEntry {
 				writer = new GenericWriter(writer);
 				await initStream(writer, passThrough ? compressedSize : uncompressedSize);
 				({ writable } = writer);
-				const { outputSize } = await runWorker({ readable, writable }, workerOptions);
+				const { outputSize } = await codec({ readable, writable }, codecOptions);
 				writer.size += outputSize;
 				if (outputSize != (passThrough ? compressedSize : uncompressedSize)) {
 					throw new Error(ERR_INVALID_UNCOMPRESSED_SIZE);

@@ -22,7 +22,7 @@ async function test() {
 			const entries = await zipReader.getEntries();
 			const fileData = await entries[0].getData(new zip.TextWriter());
 			await zipReader.close();
-			await zip.terminateWorkers();
+			console.log("zip.terminateWorkers()");
 			if (entries.length != 1 || fileData != TEXT_CONTENT || entries[0].filename != "lorem2.txt") {
 				throw new Error();
 			}

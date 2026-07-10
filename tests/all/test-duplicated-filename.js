@@ -18,7 +18,7 @@ async function test() {
 		}
 	} finally {
 		await zipWriter.close();
-		await zip.terminateWorkers();
+		console.log("zip.terminateWorkers()");
 	}
 	throw new Error();
 }

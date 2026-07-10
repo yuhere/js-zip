@@ -21,7 +21,7 @@ async function test() {
 	zipWriter = new zip.ZipWriter(blobWriter, { zip64: true, dataDescriptor: true, bufferedWrite: true });
 	await zipWriter.add(FILENAME, new zip.BlobReader(BLOB));
 	const zipDataDescriptor = await zipWriter.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (TEXT_CONTENT != await data.text() || !entries[0].zip64 || entries[0].uncompressedSize != TEXT_CONTENT.length || zipNoDataDescriptor.size >= zipDataDescriptor.size) {
 		throw new Error();
 	}

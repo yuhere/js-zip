@@ -32,5 +32,5 @@ async function test() {
 	if (firstEntry.filename !== FILENAME) {
 		throw new Error();
 	}
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 }

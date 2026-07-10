@@ -95,9 +95,12 @@ import {
 	getChunkSize
 } from "./configuration.js";
 import {
-	CODEC_DEFLATE,
-	runWorker
-} from "./codec-pool.js";
+	codec
+} from "./codec.js";
+import {
+	CODEC_DEFLATE
+} from "./streams/codec-stream.js";
+
 import {
 	initStream,
 	GenericWriter,
@@ -935,7 +938,7 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 		reader.chunkSize = getChunkSize(config);
 		const readable = reader.readable;
 		const size = reader.size;
-		const workerOptions = {
+		const codecOptions = {
 			options: {
 				codecType: CODEC_DEFLATE,
 				level,
@@ -947,7 +950,6 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 				signed: !passThrough,
 				compressed: compressed && !passThrough,
 				encrypted: encrypted && !passThrough,
-				useWebWorkers,
 				useCompressionStream,
 				transferStreams
 			},
@@ -955,7 +957,7 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 			streamOptions: { signal, size, onstart, onprogress, onend }
 		};
 		try {
-			const result = await runWorker({ readable, writable }, workerOptions);
+			const result = await codec({ readable, writable }, codecOptions);
 			compressedSize = result.outputSize;
 			writer.size += compressedSize;
 			if (!passThrough) {

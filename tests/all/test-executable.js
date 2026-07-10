@@ -21,7 +21,7 @@ async function test() {
 	if (entries[0].executable && entries[0].filename == FILENAME) {
 		const text = await entries[0].getData(new zip.TextWriter());
 		await zipReader.close();
-		await zip.terminateWorkers();
+		console.log("zip.terminateWorkers()");
 		if (TEXT_CONTENT != text) {
 			throw new Error();
 		}

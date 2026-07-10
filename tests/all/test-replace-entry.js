@@ -21,7 +21,7 @@ async function test() {
 			const entries = await zipReader.getEntries();
 			const files = await Promise.all(entries.map(entry => entry.getData(new zip.TextWriter())));
 			await zipReader.close();
-			await zip.terminateWorkers();
+			console.log("zip.terminateWorkers()");
 			if (files.length != 1 || files[0] !== TEXT_CONTENT) {
 				throw new Error();
 			}

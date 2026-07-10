@@ -18,7 +18,7 @@ async function test() {
 	let entries = await zipReader.getEntries();
 	let data = await entries[0].getData(new zip.BlobWriter(), { passThrough: true });
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (data.size != entries[0].compressedSize) {
 		throw new Error();
 	}
@@ -31,7 +31,7 @@ async function test() {
 	entries = await zipReader.getEntries();
 	data = await entries[0].getData(new zip.TextWriter(), { password: "password" });
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (data != TEXT_CONTENT) {
 		throw new Error();
 	}

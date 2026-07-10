@@ -74,6 +74,6 @@ async function test() {
 			await zipReader.close();
 		}
 	} finally {
-		await zip.terminateWorkers();
+		console.log("zip.terminateWorkers()");
 	}
 }

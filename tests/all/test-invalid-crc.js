@@ -23,7 +23,7 @@ async function test() {
 			throw error;
 		}
 	}
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (TEXT_CONTENT != await data.text()) {
 		throw new Error();
 	}

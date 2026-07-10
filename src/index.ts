@@ -1,4 +1,8 @@
-import zip from './zip.js';
+
+export * from "./zip-js/index-native.js";
+
+
+import zip from './zip';
 
 function zipBlob(fset, callback, onerror, progress) {
     zip.createWriter(new zip.BlobWriter("application/zip"),
@@ -35,23 +39,24 @@ async function zipBlob5(fset, progress) {
     })
 }
 
-
-
 function unzipBlob(fn, blob, callback, onerror) {
     zip.createReader(new zip.BlobReader(blob),
         function (zipReader) {
             zipReader.getEntries(function (entries) {
+                var found = false;
                 for (var i = 0; i < entries.length; i++) {
                     var obj = entries[i];
                     if (!obj.directory && obj.filename === fn) {
+                        found = true;
                         obj.getData(new zip.BlobWriter("text/plain"), function (data) {
                             zipReader.close();
                             callback(data);
-                            return;
                         });
+                        return;  // stop scanning entries
                     }
                 }
-                callback();  // not found the file
+                if (!found)
+                    callback();  // not found the file
             });
         }, (onerror)
     );
@@ -59,7 +64,7 @@ function unzipBlob(fn, blob, callback, onerror) {
 
 function unzipBlob5(fn, blob) {
     return new Promise(function (resolve, reject) {
-        unzipBlob(fn, fset, resolve, reject)
+        unzipBlob(fn, blob, resolve, reject)
     })
 }
 
@@ -142,8 +147,8 @@ async function closeReader(reader) {
 }
 
 export {
-    zipBlob, zipBlob5,
-    unzipBlob, unzipBlob5,
+    zipBlob5,
+    unzipBlob5,
     // ##########
     createWriter, addToZip, closeWriter,
     createReader, getFileEntries, getEntryData, closeReader

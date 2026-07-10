@@ -31,7 +31,7 @@ async function test() {
 	entries = await zipReader.getEntries();
 	data = await entries[0].getData(new zip.TextWriter(), { checkSignature: true });
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (data != TEXT_CONTENT) {
 		throw new Error();
 	}

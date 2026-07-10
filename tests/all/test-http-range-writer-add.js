@@ -16,7 +16,7 @@ async function test() {
 	const entries = await zipReader.getEntries();
 	const text = await entries[0].getData(new zip.TextWriter(zip.getMimeType(entries[0].filename)));
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (TEXT_CONTENT != text) {
 		throw new Error();
 	}

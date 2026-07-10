@@ -24,7 +24,7 @@ async function test() {
 		firstEntry.getData(entryStream),
 		zipReader.close()
 	]);
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (TEXT_CONTENT != entryText || firstEntry.uncompressedSize != TEXT_CONTENT.length || firstEntry.compressedSize <= 0) {
 		throw new Error();
 	}

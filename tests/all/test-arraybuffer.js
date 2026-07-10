@@ -19,7 +19,7 @@ async function test() {
 	const data = await entries[0].arrayBuffer();
 	const text = new TextDecoder().decode(data);
 	await zipReader.close();
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (TEXT_CONTENT != text) {
 		throw new Error();
 	}

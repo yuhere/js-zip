@@ -17,7 +17,7 @@ async function test() {
 	const firstEntry = zipFs.children[0];
 	const arraybuffer = await firstEntry.getArrayBuffer();
 	const text = new TextDecoder().decode(arraybuffer);
-	await zip.terminateWorkers();
+	console.log("zip.terminateWorkers()");
 	if (text != TEXT_CONTENT) {
 		throw new Error();
 	}
