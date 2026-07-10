@@ -36,5 +36,5 @@ async function test() {
 			throw new Error();
 		}
 	}
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 }

@@ -9,7 +9,7 @@ const url = new URL("./../data/lorem.zip", import.meta.url).href;
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter, {});
 	await zipWriter.prependZip(new zip.HttpReader(url, { preventHeadRequest: true }));
@@ -23,7 +23,7 @@ async function test() {
 			const entries = await zipReader.getEntries();
 			const files = await Promise.all(entries.map(entry => entry.getData(new zip.TextWriter())));
 			await zipReader.close();
-			console.log("zip.terminateWorkers()");
+			// zip.terminateWorkers()
 			if (files.length != 2 || files[0] !== TEXT_CONTENT || files[1] !== TEXT_CONTENT) {
 				throw new Error();
 			}

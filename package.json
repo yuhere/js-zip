@@ -2,7 +2,7 @@
     "name": "@yuhere/js-zip",
     "type": "module",
     "description": "utility library for reading and writing zip files in browser.",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "yuhere",
     "repository": "https://github.com/yuhere/js-zip.git",
     "license": "MIT",
@@ -19,9 +19,13 @@
     "scripts": {
         "build": "npm-run-all -p build:*",
         "build:rollup": "rollup --config rollup.config.js",
-        "build-pending:types": "tsc -p tsconfig.types.json",
         "lint": "eslint src",
-        "test": "npm run build && npx c8 mocha"
+        "test": "npm run test-node",
+        "test-deno": "cd ./tests && deno test --allow-read ./deno-runner.js",
+        "test-node": "cd ./tests && node ./node-runner.js",
+        "test-bun": "cd ./tests && bun test ./bun-runner.js",
+        "test-firefox": "firefox http://localhost:8081/tests/ & npx http-server -p=8081 & wait $!",
+        "test-chrome": "google-chrome http://localhost:8081/tests/ & npx http-server -p=8081 & wait $!"
     },
     "devDependencies": {
         "@types/chai": "^5.2.3",

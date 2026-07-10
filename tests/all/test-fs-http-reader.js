@@ -9,7 +9,7 @@ const url = new URL("./../data/lorem.txt", import.meta.url).href;
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	let zipFs = new zip.fs.FS();
 	zipFs.addHttpContent(FILENAME, url, { preventHeadRequest: true });
 	const blob = await zipFs.exportBlob();
@@ -17,7 +17,7 @@ async function test() {
 	await zipFs.importBlob(blob);
 	const firstEntry = zipFs.children[0];
 	const text = await firstEntry.getText();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (text != TEXT_CONTENT || firstEntry.name != FILENAME || firstEntry.uncompressedSize != TEXT_CONTENT.length) {
 		throw new Error();
 	}

@@ -3,7 +3,7 @@ import * as zip from "../../index.js";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: false });
+	zip.configure({ chunkSize: 128 });
 
 	const CASES = [
 		{ name: "infozip", options: { compressionMethod: 0, unixMode: 0o100644, uid: 1000, gid: 1000, unixExtraFieldType: "infozip" } },
@@ -46,6 +46,6 @@ async function test() {
 			await zipReader.close();
 		}
 	} finally {
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

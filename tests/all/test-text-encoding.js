@@ -1,15 +1,16 @@
 /* global Blob */
 
 import * as zip from "../../index.js";
+import { getMimeType } from "./mime/mime-type.js";
 
 const TEXT_CONTENT = "";
 const FILENAME = "lorem.txt";
-const BLOB = new Blob([TEXT_CONTENT], { type: zip.getMimeType(FILENAME) });
+const BLOB = new Blob([TEXT_CONTENT], { type: getMimeType(FILENAME) });
 
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter, {
 		encodeText: value => { return new Uint8Array(value.split("").reverse().map(char => char.charCodeAt(0))); }
@@ -32,5 +33,5 @@ async function test() {
 	if (firstEntry.filename !== FILENAME) {
 		throw new Error();
 	}
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 }

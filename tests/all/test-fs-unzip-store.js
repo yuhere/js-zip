@@ -8,7 +8,7 @@ const url = new URL("./../data/lorem.zip", import.meta.url).href;
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	let zipFs = new zip.fs.FS();
 	let directory = zipFs.addDirectory("import");
 	await directory.importHttpContent(url, { preventHeadRequest: true });
@@ -18,7 +18,7 @@ async function test() {
 	directory = zipFs.getChildByName("import");
 	const firstEntry = directory.children[0];
 	const text = await firstEntry.getText();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (text != TEXT_CONTENT) {
 		throw new Error();
 	}

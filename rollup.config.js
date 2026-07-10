@@ -9,11 +9,14 @@ import esbuild from 'rollup-plugin-esbuild';
 const production = !process.env.ROLLUP_WATCH;
 
 export default [{
-    input: 'src/index.ts',
+    input: 'src/index.js',
     output: {
         sourcemap: false,
         format: 'es',
-        file: "lib/index.js"
+        preserveModules: true,
+        preserveModulesRoot: path.resolve(__dirname, 'src'),
+        dir: path.resolve(__dirname, 'lib')
+        // file: "lib/index.js"
     },
     plugins: [
         esbuild({

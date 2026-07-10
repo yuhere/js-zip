@@ -7,13 +7,13 @@ const TEXT_CONTENT = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, 
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const readable = (await fetch(new URL("../data/lorem.zip", import.meta.url))).body;
 	const zipReader = new zip.ZipReader(readable);
 	const entries = await zipReader.getEntries();
 	const data = await entries[0].getData(new zip.BlobWriter());
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (TEXT_CONTENT != await data.text()) {
 		throw new Error();
 	}

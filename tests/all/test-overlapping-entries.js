@@ -7,7 +7,7 @@ const TEXT_CONTENT = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, 
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const readable = (await fetch(new URL("../data/lorem-overlapping-entries.zip", import.meta.url))).body;
 	const zipReader = new zip.ZipReader(readable);
 	const entries = await zipReader.getEntries();
@@ -32,6 +32,6 @@ async function test() {
 		}
 	} finally {
 		await zipReader.close();
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

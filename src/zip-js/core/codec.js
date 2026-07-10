@@ -10,8 +10,6 @@ export {
 
 async function codec(stream, codecOptions) {
     const { options, config, streamOptions } = codecOptions;
-    const { useCompressionStream } = options;
-    options.useCompressionStream = useCompressionStream || (useCompressionStream === UNDEFINED_VALUE && config.useCompressionStream);
     // #############
     const { readable, writable } = stream;
     const { signal } = streamOptions;

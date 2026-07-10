@@ -16,7 +16,7 @@ const ENTRIES_DATA_PASS2 = [
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 512, useWebWorkers: true });
+	zip.configure({ chunkSize: 512 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter);
 	await Promise.all(ENTRIES_DATA.map(entryData => zipWriter.add(entryData.name, new zip.BlobReader(entryData.blob), { level: Math.random() > .5 ? 5 : 0 })));
@@ -42,7 +42,7 @@ async function test() {
 		const blob = await entry.getData(new zip.BlobWriter("application/octet-stream"));
 		return compareResult(blob, ENTRIES_DATA_PASS2.find(otherEntry => otherEntry.name == entry.filename).blob);
 	}));
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (results.includes(false) || results2.includes(false)) {
 		throw new Error();
 	}

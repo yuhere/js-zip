@@ -5,7 +5,7 @@ import * as zip from "../../index.js";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const readable = (await fetch(new URL("../data/lorem-overlapping-entries.zip", import.meta.url))).body;
 	const zipReader = new zip.ZipReader(readable, { checkOverlappingEntryOnly: true });
 	const entries = await zipReader.getEntries();
@@ -20,6 +20,6 @@ async function test() {
 		}
 	} finally {
 		await zipReader.close();
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

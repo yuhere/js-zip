@@ -20,7 +20,7 @@ function* blobWriterGenerator() {
 }
 
 async function test() {
-	zip.configure({ chunkSize: 1024, useWebWorkers: true });
+	zip.configure({ chunkSize: 1024 });
 	const splitZipWriter = blobWriterGenerator();
 	const zipWriter = new zip.ZipWriter(splitZipWriter);
 	await Promise.all([
@@ -34,7 +34,7 @@ async function test() {
 	const entries = await zipReader.getEntries();
 	const results = await Promise.all(entries.map(async entry => (await entry.getData(new zip.TextWriter())).length == TEXT_CONTENT.length * TEXT_CONTENT_REPEAT));
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (results.includes(false)) {
 		throw new Error();
 	}

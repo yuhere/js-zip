@@ -11,7 +11,7 @@ const ENTRIES_DATA = [
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter);
 	await Promise.all(ENTRIES_DATA.map(entryData => zipWriter.add(entryData.name, new zip.BlobReader(entryData.blob), { keepOrder: false, bufferedWrite: true, level: Math.random() > .5 ? 5 : 0 })));
@@ -22,7 +22,7 @@ async function test() {
 		const blob = await entry.getData(new zip.BlobWriter("application/octet-stream"));
 		return compareResult(blob, indexEntry);
 	}));
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (results.includes(false)) {
 		throw new Error();
 	}

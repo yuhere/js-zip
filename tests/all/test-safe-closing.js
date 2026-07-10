@@ -11,7 +11,7 @@ const ENTRIES_DATA = [
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 512, maxWorkers: 4, useWebWorkers: true });
+	zip.configure({ chunkSize: 512, maxWorkers: 4 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter);
 	ENTRIES_DATA.map(entryData => zipWriter.add(entryData.name, new zip.BlobReader(entryData.blob))); // missing call to `await Promise.all`
@@ -22,7 +22,7 @@ async function test() {
 		const blob = await entry.getData(new zip.BlobWriter("application/octet-stream"));
 		return compareResult(blob, ENTRIES_DATA[indexEntry].blob);
 	}));
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (results.includes(false)) {
 		throw new Error();
 	}

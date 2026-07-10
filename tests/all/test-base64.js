@@ -9,7 +9,7 @@ const DATA_URI = "data:text/plain;base64," + btoa(TEXT_CONTENT);
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter);
 	await zipWriter.add(FILENAME, new zip.Data64URIReader(DATA_URI));
@@ -18,7 +18,7 @@ async function test() {
 	const entries = await zipReader.getEntries();
 	const data = await entries[0].getData(new zip.Data64URIWriter("text/plain"));
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (data != DATA_URI) {
 		throw new Error();
 	}

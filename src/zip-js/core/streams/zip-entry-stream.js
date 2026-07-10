@@ -52,7 +52,7 @@ class DeflateStream extends TransformStream {
 
 	constructor(options, { chunkSize, CompressionStreamZlib, CompressionStream }) {
 		super({});
-		const { compressed, encrypted, useCompressionStream, zipCrypto, signed, level } = options;
+		const { compressed, encrypted, zipCrypto, signed, level } = options;
 		const stream = this;
 		let crc32Stream, encryptionStream;
 		let readable = super.readable;
@@ -61,7 +61,7 @@ class DeflateStream extends TransformStream {
 			readable = pipeThrough(readable, crc32Stream);
 		}
 		if (compressed) {
-			readable = pipeThroughCommpressionStream(readable, useCompressionStream, { level, chunkSize }, CompressionStream, CompressionStreamZlib, CompressionStream);
+			readable = pipeThroughCommpressionStream(readable, { level, chunkSize }, CompressionStream, CompressionStreamZlib, CompressionStream);
 		}
 		if (encrypted) {
 			if (zipCrypto) {
@@ -88,7 +88,7 @@ class InflateStream extends TransformStream {
 
 	constructor(options, { chunkSize, DecompressionStreamZlib, DecompressionStream }) {
 		super({});
-		const { zipCrypto, encrypted, signed, signature, compressed, useCompressionStream, deflate64 } = options;
+		const { zipCrypto, encrypted, signed, signature, compressed, deflate64 } = options;
 		let crc32Stream, decryptionStream;
 		let readable = super.readable;
 		if (encrypted) {
@@ -100,7 +100,7 @@ class InflateStream extends TransformStream {
 			}
 		}
 		if (compressed) {
-			readable = pipeThroughCommpressionStream(readable, useCompressionStream, { chunkSize, deflate64 }, DecompressionStream, DecompressionStreamZlib, DecompressionStream);
+			readable = pipeThroughCommpressionStream(readable, { chunkSize, deflate64 }, DecompressionStream, DecompressionStreamZlib, DecompressionStream);
 		}
 		if ((!encrypted || zipCrypto) && signed) {
 			crc32Stream = new Crc32Stream();
@@ -135,20 +135,14 @@ function setReadable(stream, readable, flush) {
 	});
 }
 
-function pipeThroughCommpressionStream(readable, useCompressionStream, options, CompressionStreamNative, CompressionStreamZlib, CompressionStream) {
-	const Stream = useCompressionStream && CompressionStreamNative ? CompressionStreamNative : CompressionStreamZlib || CompressionStream;
+function pipeThroughCommpressionStream(readable, options, CompressionStreamNative, CompressionStreamZlib, CompressionStream) {
+	const Stream = CompressionStreamNative ? CompressionStreamNative : CompressionStreamZlib || CompressionStream;
 	const format = options.deflate64 ? FORMAT_DEFLATE64_RAW : FORMAT_DEFLATE_RAW;
 	try {
 		readable = pipeThrough(readable, new Stream(format, options));
 	} catch (error) {
-		if (useCompressionStream) {
-			if (CompressionStreamZlib) {
-				readable = pipeThrough(readable, new CompressionStreamZlib(format, options));
-			} else if (CompressionStream) {
-				readable = pipeThrough(readable, new CompressionStream(format, options));
-			} else {
-				throw error;
-			}
+		if (CompressionStreamZlib) {
+			readable = pipeThrough(readable, new CompressionStreamZlib(format, options));
 		} else {
 			throw error;
 		}

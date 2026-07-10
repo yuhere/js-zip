@@ -142,7 +142,6 @@ import {
 	OPTION_RAW_PASSWORD,
 	OPTION_PASS_THROUGH,
 	OPTION_SIGNAL,
-	OPTION_USE_COMPRESSION_STREAM,
 	OPTION_TRANSFER_STREAMS,
 	OPTION_PREVENT_CLOSE,
 	OPTION_ENCRYPTION_STRENGTH,
@@ -548,19 +547,12 @@ async function addFile(zipWriter, name, reader, options) {
 	const useUnicodeFileNames = getOptionValue(zipWriter, options, OPTION_USE_UNICODE_FILE_NAMES, true);
 	const compressionMethod = getOptionValue(zipWriter, options, PROPERTY_NAME_COMPRESSION_METHOD);
 	let level = getOptionValue(zipWriter, options, OPTION_LEVEL);
-	let useCompressionStream = getOptionValue(zipWriter, options, OPTION_USE_COMPRESSION_STREAM);
 	let dataDescriptor = getOptionValue(zipWriter, options, OPTION_DATA_DESCRIPTOR);
 	if (bufferedWrite && dataDescriptor === UNDEFINED_VALUE) {
 		dataDescriptor = false;
 	}
 	if (dataDescriptor === UNDEFINED_VALUE || zipCrypto) {
 		dataDescriptor = true;
-	}
-	if (level !== UNDEFINED_VALUE && level != 6) {
-		useCompressionStream = false;
-	}
-	if (!useCompressionStream && (CompressionStream === UNDEFINED_VALUE && CompressionStreamZlib === UNDEFINED_VALUE)) {
-		level = 0;
 	}
 	let zip64 = getOptionValue(zipWriter, options, PROPERTY_NAME_ZIP64);
 	if (!zipCrypto && (password !== UNDEFINED_VALUE || rawPassword !== UNDEFINED_VALUE) && !(encryptionStrength >= 1 && encryptionStrength <= 3)) {
@@ -658,7 +650,6 @@ async function addFile(zipWriter, name, reader, options) {
 		internalFileAttributes,
 		externalFileAttribute: externalFileAttributes,
 		externalFileAttributes,
-		useCompressionStream,
 		passThrough,
 		encrypted: Boolean((password && getLength(password)) || (rawPassword && getLength(rawPassword))) || (passThrough && encrypted),
 		signature: options[PROPERTY_NAME_SIGNATURE],
@@ -899,7 +890,6 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 		unixExternalUpper,
 		msdosAttributesRaw,
 		msdosAttributes,
-		useCompressionStream,
 		passThrough
 	} = options;
 	const fileEntry = {
@@ -959,7 +949,6 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 				signed: !passThrough,
 				compressed: compressed && !passThrough,
 				encrypted: encrypted && !passThrough,
-				useCompressionStream,
 				transferStreams
 			},
 			config: { ...zlibCfg, chunkSize: getChunkSize(config) },

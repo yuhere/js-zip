@@ -8,7 +8,7 @@ const FILENAME = "lorem.txt";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const sourceFS = new zip.fs.FS();
 	sourceFS.addReadable(FILENAME, new Blob([TEXT_CONTENT]).stream());
 	let transformStream = new TransformStream();
@@ -17,7 +17,7 @@ async function test() {
 	const firstEntry = destinationFS.children[0];
 	transformStream = new TransformStream();
 	const [text] = await Promise.all([new Response(transformStream.readable).text(), firstEntry.getWritable(transformStream.writable)]);
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (text != TEXT_CONTENT) {
 		throw new Error();
 	}

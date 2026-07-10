@@ -11,14 +11,14 @@ const ENTRIES_DATA = [
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 512, useWebWorkers: true, maxWorkers: 4 });
+	zip.configure({ chunkSize: 512, maxWorkers: 4 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter, { keepOrder: true });
 	await Promise.all(ENTRIES_DATA.map(entryData => zipWriter.add(entryData.name, new zip.BlobReader(entryData.blob))));
 	await zipWriter.close();
 	const zipReader = new zip.ZipReader(new zip.BlobReader(await blobWriter.getData()));
 	const entries = await zipReader.getEntries();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (JSON.stringify(ENTRIES_DATA.map(entry => entry.name)) !=
 		JSON.stringify(entries.sort((entry1, entry2) => entry1.offset - entry2.offset).map(entry => entry.filename))) {
 		throw new Error();

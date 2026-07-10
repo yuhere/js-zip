@@ -35,6 +35,7 @@ import {
 	FUNCTION_TYPE,
 	END_OF_CENTRAL_DIR_LENGTH
 } from "./constants.js";
+import { getConfiguration } from "./configuration.js";
 
 const ERR_HTTP_STATUS = "HTTP error ";
 const ERR_HTTP_RANGE = "HTTP Range not supported";
@@ -754,8 +755,7 @@ class GenericWriter {
 }
 
 function isHttpFamily(url) {
-	console.log("isHttpFamily", url);
-	const { protocol } = new URL(url, window.location.origin);
+	const { protocol } = new URL(url);
 	return protocol == "http:" || protocol == "https:";
 }
 

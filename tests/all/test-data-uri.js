@@ -6,7 +6,7 @@ export { test };
 
 async function test() {
 	try {
-		zip.configure({ chunkSize: 128, useWebWorkers: true });
+		zip.configure({ chunkSize: 128 });
 		const zipWriter = new zip.ZipWriter(new zip.Data64URIWriter());
 		await zipWriter.add(FILENAME, new zip.TextReader(""));
 		const data64Uri = await zipWriter.close();
@@ -15,6 +15,6 @@ async function test() {
 		await entries[0].getData(new zip.BlobWriter());
 		await zipReader.close();
 	} finally {
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

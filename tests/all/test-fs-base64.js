@@ -9,7 +9,7 @@ const DATA_URI = "data:text/plain;base64," + btoa(TEXT_CONTENT);
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	let zipFs = new zip.fs.FS();
 	zipFs.addData64URI(FILENAME, DATA_URI);
 	const data = await zipFs.exportData64URI();
@@ -17,7 +17,7 @@ async function test() {
 	await zipFs.importData64URI(data);
 	const firstEntry = zipFs.children[0];
 	const dataURI = await firstEntry.getData64URI("text/plain");
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (dataURI != DATA_URI) {
 		throw new Error();
 	}

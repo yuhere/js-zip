@@ -26,4 +26,28 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export * from "./zip-core-base.js";
+import { configure } from "./core/configuration.js";
+
+export * from "./zip-core-reader.js";
+export * from "./zip-core-writer.js";
+export {
+	Reader,
+	Writer,
+	TextReader,
+	TextWriter,
+	Data64URIReader,
+	Data64URIWriter,
+	BlobReader,
+	BlobWriter,
+	HttpReader,
+	HttpRangeReader,
+	Uint8ArrayWriter,
+	Uint8ArrayReader,
+	SplitDataReader,
+	SplitDataWriter,
+	ERR_HTTP_RANGE
+} from "./core/io.js";
+
+export {
+	configure
+} from "./core/configuration.js";

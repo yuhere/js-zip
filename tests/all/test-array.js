@@ -7,7 +7,7 @@ const ARRAY = new Uint8Array(Array.from(TEXT_CONTENT).map(character => character
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const arrayWriter = new zip.Uint8ArrayWriter();
 	const zipWriter = new zip.ZipWriter(arrayWriter);
 	await zipWriter.add(FILENAME, new zip.Uint8ArrayReader(ARRAY));
@@ -16,7 +16,7 @@ async function test() {
 	const entries = await zipReader.getEntries();
 	const data = await entries[0].getData(new zip.Uint8ArrayWriter());
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (getArrayText(data) != TEXT_CONTENT) {
 		throw new Error();
 	}

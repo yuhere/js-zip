@@ -5,7 +5,7 @@ const FILENAME = "lorem.txt";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const zipWriter = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
 	try {
 		await Promise.all([
@@ -18,7 +18,7 @@ async function test() {
 		}
 	} finally {
 		await zipWriter.close();
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 	throw new Error();
 }

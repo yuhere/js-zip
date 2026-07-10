@@ -8,7 +8,7 @@ const FILENAME = "lorem.txt";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const zipStream = new TransformStream();
 	const zipWriter = new zip.ZipWriter(zipStream);
 	const zipReader = new zip.ZipReader(zipStream);
@@ -24,7 +24,7 @@ async function test() {
 		firstEntry.getData(entryStream),
 		zipReader.close()
 	]);
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (TEXT_CONTENT != entryText || firstEntry.uncompressedSize != TEXT_CONTENT.length || firstEntry.compressedSize <= 0) {
 		throw new Error();
 	}

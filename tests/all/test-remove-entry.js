@@ -8,7 +8,7 @@ const BLOB = new Blob([TEXT_CONTENT], { type: "text/plain" });
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter, {});
 	const addedEntries = await Promise.all([
@@ -22,7 +22,7 @@ async function test() {
 			const entries = await zipReader.getEntries();
 			const fileData = await entries[0].getData(new zip.TextWriter());
 			await zipReader.close();
-			console.log("zip.terminateWorkers()");
+			// zip.terminateWorkers()
 			if (entries.length != 1 || fileData != TEXT_CONTENT || entries[0].filename != "lorem2.txt") {
 				throw new Error();
 			}

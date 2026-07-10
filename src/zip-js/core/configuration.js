@@ -45,7 +45,6 @@ try {
 const DEFAULT_CONFIGURATION = {
 	maxWorkers,
 	// 
-	useCompressionStream: true,
 	chunkSize: 64 * 1024,
 };
 
@@ -69,11 +68,9 @@ function configure(configuration) {
 	const {
 		chunkSize,
 		maxWorkers,
-		useCompressionStream,
 	} = configuration;
 	setIfDefined("chunkSize", chunkSize);
 	setIfDefined("maxWorkers", maxWorkers);
-	setIfDefined("useCompressionStream", useCompressionStream);
 }
 
 function setIfDefined(propertyName, propertyValue) {

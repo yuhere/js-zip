@@ -18,7 +18,7 @@ function* arrayWriterGenerator() {
 }
 
 async function test() {
-	zip.configure({ chunkSize: 1024, useWebWorkers: true });
+	zip.configure({ chunkSize: 1024 });
 	const zipWriter = new zip.ZipWriter(new zip.BlobWriter());
 	const readers = [
 		new zip.TextReader(TEXT_CONTENT),
@@ -31,7 +31,7 @@ async function test() {
 	await firstEntry.getData(new zip.SplitDataWriter(arrayWriterGenerator(), 128));
 	const chunks = await Promise.all(writers.map(writer => writer.getData()));
 	const text = new TextDecoder().decode(new Uint8Array(chunks.map(data => Array.from(data)).flat()));
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (text != TEXT_CONTENT + TEXT_CONTENT) {
 		throw new Error();
 	}

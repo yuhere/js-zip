@@ -24,6 +24,6 @@ async function test() {
 		}
 		await zipReader.close();
 	} finally {
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

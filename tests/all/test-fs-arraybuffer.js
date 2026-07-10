@@ -8,7 +8,7 @@ const FILENAME = "lorem.txt";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	let zipFs = new zip.fs.FS();
 	zipFs.addText(FILENAME, TEXT_CONTENT);
 	const data = await zipFs.exportBlob();
@@ -17,7 +17,7 @@ async function test() {
 	const firstEntry = zipFs.children[0];
 	const arraybuffer = await firstEntry.getArrayBuffer();
 	const text = new TextDecoder().decode(arraybuffer);
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (text != TEXT_CONTENT) {
 		throw new Error();
 	}

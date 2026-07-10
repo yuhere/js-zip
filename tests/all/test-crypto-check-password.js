@@ -6,7 +6,7 @@ const FILENAME = "lorem.txt";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const blobWriter = new zip.BlobWriter("application/zip");
 	const zipWriter = new zip.ZipWriter(blobWriter, { password: "password" });
 	await zipWriter.add(FILENAME, new zip.TextReader(TEXT_CONTENT));
@@ -34,7 +34,7 @@ async function test() {
 		}
 	}
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (undefinedData !== undefined || data !== TEXT_CONTENT) {
 		throw new Error();
 	}

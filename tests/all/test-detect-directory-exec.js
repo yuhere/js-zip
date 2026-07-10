@@ -3,7 +3,7 @@ import * as zip from "../../index.js";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: false });
+	zip.configure({ chunkSize: 128 });
 
 	const CASES = [
 		{
@@ -74,6 +74,6 @@ async function test() {
 			await zipReader.close();
 		}
 	} finally {
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

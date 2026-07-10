@@ -140,7 +140,6 @@ import {
 	OPTION_CHECK_OVERLAPPING_ENTRY_ONLY,
 	OPTION_CHECK_OVERLAPPING_ENTRY,
 	OPTION_CHECK_SIGNATURE,
-	OPTION_USE_COMPRESSION_STREAM,
 	OPTION_TRANSFER_STREAMS,
 	OPTION_PREVENT_CLOSE
 } from "./options.js";
@@ -568,10 +567,6 @@ class ZipEntry {
 		}
 		const { onstart, onprogress, onend } = options;
 		const deflate64 = compressionMethod == COMPRESSION_METHOD_DEFLATE_64;
-		let useCompressionStream = getOptionValue(zipEntry, options, OPTION_USE_COMPRESSION_STREAM);
-		if (deflate64) {
-			useCompressionStream = false;
-		}
 		const codecOptions = {
 			options: {
 				codecType: CODEC_INFLATE,
@@ -585,7 +580,6 @@ class ZipEntry {
 				signature,
 				compressed: compressionMethod != 0 && !passThrough,
 				encrypted: zipEntry.encrypted && !passThrough,
-				useCompressionStream,
 				transferStreams: getOptionValue(zipEntry, options, OPTION_TRANSFER_STREAMS),
 				deflate64,
 				checkPasswordOnly

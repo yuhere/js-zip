@@ -2,40 +2,131 @@
 
 js-zip is a JavaScript library for creating and reading .zip files in the browser.
 
-chrome 浏览器中解压 zip 文件。
+This library is forked from the version of https://github.com/gildas-lormeau/zip.js/tree/v2.8.26
 
-插件 "Chrome extension source viewer" 中使用 zip.js 对 CRX 文件进行解压缩&压缩处理，
+# Examples
 
-这个库是 fork 自 https://github.com/gildas-lormeau/zip.js 比较早期的版本。
+## Hello world
 
-``` javascript
-function handleBlob(blob, publicKey, raw_crx_data) {
-    var progressDiv = document.getElementById('initial-status');
-    progressDiv.hidden = true;
+```js
+import {
+  BlobReader,
+  BlobWriter,
+  TextReader,
+  TextWriter,
+  ZipReader,
+  ZipWriter
+} from "@yuhere/js-zip";
 
-    setBlobAsDownload(blob);
-    setRawCRXAsDownload(raw_crx_data);
-    setPublicKey(publicKey);
+// ----
+// Write the zip file
+// ----
 
-    zip.createReader(new zip.BlobReader(blob), function(zipReader) {
-        renderPanelResizer();
-        zipReader.getEntries(handleZipEntries);
-        window.addEventListener('unload', function() {
-            zipReader.close();
-            // Close background page as well, to avoid memory leak.....
-            //chrome.extension.getBackgroundPage().close();
-            // F***, Extension crashes if navigating away >.>
-        });
-    });
-}
+// Creates a BlobWriter object where the zip content will be written.
+const zipFileWriter = new BlobWriter();
+// Creates a TextReader object storing the text of the entry to add in the zip
+// (i.e. "Hello world!").
+const helloWorldReader = new TextReader("Hello world!");
+
+// Creates a ZipWriter object writing data via `zipFileWriter`, adds the entry
+// "hello.txt" containing the text "Hello world!" via `helloWorldReader`, and
+// closes the writer.
+const zipWriter = new ZipWriter(zipFileWriter);
+await zipWriter.add("hello.txt", helloWorldReader);
+await zipWriter.close();
+
+// Retrieves the Blob object containing the zip content into `zipFileBlob`. It
+// is also returned by zipWriter.close() for more convenience.
+const zipFileBlob = await zipFileWriter.getData();
+
+// ----
+// Read the zip file
+// ----
+
+// Creates a BlobReader object used to read `zipFileBlob`.
+const zipFileReader = new BlobReader(zipFileBlob);
+// Creates a TextWriter object where the content of the first entry in the zip
+// will be written.
+const helloWorldWriter = new TextWriter();
+
+// Creates a ZipReader object reading the zip content via `zipFileReader`,
+// retrieves metadata (name, dates, etc.) of the first entry, retrieves its
+// content via `helloWorldWriter`, and closes the reader.
+const zipReader = new ZipReader(zipFileReader);
+const firstEntry = (await zipReader.getEntries()).shift();
+const helloWorldText = await firstEntry.getData(helloWorldWriter);
+await zipReader.close();
+
+// Displays "Hello world!".
+console.log(helloWorldText);
 ```
 
-# 修改了什么？
+## Hello world with Streams
 
-  1, 放弃使用 worker 的方式(还有部分代码残留, 有空清理);
-  2, 增加了对 zip 文件的分批读写的支持, 适合大文件的处理;
+```js
+import {
+  BlobReader,
+  ZipReader,
+  ZipWriter
+} from "@yuhere/js-zip";
 
-# 参考
+// ----
+// Write the zip file
+// ----
+
+// Creates a TransformStream object, the zip content will be written in the
+// `writable` property.
+const zipFileStream = new TransformStream();
+// Creates a Promise object resolved to the zip content returned as a Blob
+// object retrieved from `zipFileStream.readable`.
+const zipFileBlobPromise = new Response(zipFileStream.readable).blob();
+// Creates a ReadableStream object storing the text of the entry to add in the
+// zip (i.e. "Hello world!").
+const helloWorldReadable = new Blob(["Hello world!"]).stream();
+
+// Creates a ZipWriter object writing data into `zipFileStream.writable`, adds
+// the entry "hello.txt" containing the text "Hello world!" retrieved from
+// `helloWorldReadable`, and closes the writer.
+const zipWriter = new ZipWriter(zipFileStream.writable);
+await zipWriter.add("hello.txt", helloWorldReadable);
+await zipWriter.close();
+
+// Retrieves the Blob object containing the zip content into `zipFileBlob`.
+const zipFileBlob = await zipFileBlobPromise;
+
+// ----
+// Read the zip file
+// ----
+
+// Creates a BlobReader object used to read `zipFileBlob`.
+const zipFileReader = new BlobReader(zipFileBlob);
+// Creates a TransformStream object, the content of the first entry in the zip
+// will be written in the `writable` property.
+const helloWorldStream = new TransformStream();
+// Creates a Promise object resolved to the content of the first entry returned
+// as text from `helloWorldStream.readable`.
+const helloWorldTextPromise = new Response(helloWorldStream.readable).text();
+
+// Creates a ZipReader object reading the zip content via `zipFileReader`,
+// retrieves metadata (name, dates, etc.) of the first entry, retrieves its
+// content into `helloWorldStream.writable`, and closes the reader.
+const zipReader = new ZipReader(zipFileReader);
+const firstEntry = (await zipReader.getEntries()).shift();
+await firstEntry.getData(helloWorldStream.writable);
+await zipReader.close();
+
+// Displays "Hello world!".
+const helloWorldText = await helloWorldTextPromise;
+console.log(helloWorldText);
+```
+
+
+# Modifications
+
+  1. Removed the Web Worker approach (some residual code remains, to be cleaned up);
+  2. Added support for batched read/write of zip files, suitable for handling large files;
+
+# Reference
 
     https://github.com/gildas-lormeau/zip.js/tree/master/WebContent/tests
 
@@ -78,10 +169,10 @@ function unzipBlob(fn, blob, callback, onerror) {
 ```
 
 
-#### 一次性读写 zip 文件的例子 (callback)
+#### One-shot read/write example (callback)
 
 ``` javascript
-// 读取 zip 文件中指定文件名的的 zipEntry
+// Read a specific zip entry by name
 unzipBlob(entryName, zippedBlob, function (unzippedBlob) {
     if (unzippedBlob !== undefined) {
         ..... unzippedBlob
@@ -92,7 +183,7 @@ unzipBlob(entryName, zippedBlob, function (unzippedBlob) {
     console.error(err);
 });
 
-// 写入 zip 文件
+// Write a zip file
 zipEntries.push({fn: "data1.json", blob: new Blob([JSON.stringify({record: data}, null, 2)], {type: 'text/plain;charset=utf-8'})});
 zipEntries.push({fn: "data2.json", blob: new Blob([JSON.stringify({record: data}, null, 2)], {type: 'text/plain;charset=utf-8'})});
 zipBlob(zipEntries, function (zippedBlob) {
@@ -100,7 +191,7 @@ zipBlob(zipEntries, function (zippedBlob) {
 });
 ```
 
-#### 分批读写 zip 文件的例子
+#### Batched read/write example
 
 ``` javascript
 async function(zipFileBlob) {
@@ -115,8 +206,8 @@ async function(zipFileBlob) {
     for (let i = 0;i < entries.length;i++) {
         let blob = await getEntryData(reader, entries[i]);
         let list = await blob2json(blob);
-        // blob 是从 zipEntry 中获得的数据
-        // 这里根据需要做点什么...
+        // blob is the data from the zipEntry
+        // process it as needed...
     }
     console.log("...bulkPut...end...");
     await closeReader(reader);
@@ -129,12 +220,12 @@ async function(name, fn, callback) {
     //
     const irs = await cache_export_i(name, db, total, SIZE);
     for (let ii = 0, {done, value} = await irs.next();!done;ii++, {done, value} = await irs.next()) {
-        // 在循环中获得一笔一笔的数据
+        // Get data batch by batch in the loop
         typeof(callback)==="function" && callback("in-progress", ii * SIZE + value.length, total);
-        // 将数据逐笔的加入到 zip 中....
+        // Add each batch to the zip incrementally
         await addToZip(zipWriter, {fn: "fcache_exp_" + ii + ".json", blob: new Blob([JSON.stringify(value, null, 2)])} )
     }
-    // 最后获得 zipFileBlob
+    // Finally get the zipped blob
     const zippedBlob = await closeWriter(zipWriter);
     typeof(callback)==="function" && callback("done", fn);
     return saveAs(zippedBlob, fn);

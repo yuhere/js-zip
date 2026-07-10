@@ -1,6 +1,7 @@
 /* global URL */
 
 import * as zip from "../../index.js";
+import { getMimeType } from "./mime/mime-type.js";
 
 const TEXT_CONTENT = `
 
@@ -49,13 +50,13 @@ const url = new URL("./../data/lorem-deflate64.zip", import.meta.url).href;
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const zipReader = new zip.ZipReader(new zip.HttpReader(url, { preventHeadRequest: true }));
 	const entries = await zipReader.getEntries();
-	const dataBlobWriter = new zip.BlobWriter(zip.getMimeType(entries[0].filename));
+	const dataBlobWriter = new zip.BlobWriter(getMimeType(entries[0].filename));
 	const data = await entries[0].getData(dataBlobWriter);
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	const text = await data.text();
 	if (TEXT_CONTENT != text) {
 		throw new Error();

@@ -51,7 +51,7 @@ class BinaryStringWriter extends zip.Writer {
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const binaryStringWriter = new BinaryStringWriter();
 	const zipWriter = new zip.ZipWriter(binaryStringWriter);
 	await zipWriter.add(FILENAME, new BinaryStringReader(TEXT_CONTENT));
@@ -60,7 +60,7 @@ async function test() {
 	const entries = await zipReader.getEntries();
 	const data = await entries[0].getData(new BinaryStringWriter());
 	await zipReader.close();
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 	if (TEXT_CONTENT != data) {
 		throw new Error();
 	}

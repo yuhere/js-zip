@@ -3,7 +3,7 @@ import * as zip from "../../index.js";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: false });
+	zip.configure({ chunkSize: 128 });
 
 	const cases = [
 		{ name: "numeric-all", msdosAttributesRaw: 0x33 }, // readOnly + archive + hidden (0x01 + 0x20 + 0x02)
@@ -49,6 +49,6 @@ async function test() {
 			await zipReader.close();
 		}
 	} finally {
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }

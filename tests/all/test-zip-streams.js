@@ -9,7 +9,7 @@ const FILENAME_SECOND_ENTRY = "lorem2.txt";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const zipWriterStream = new zip.ZipWriterStream();
 	const transformStream = new TransformStream();
 	zipWriterStream.readable.pipeTo(transformStream.writable);
@@ -36,5 +36,5 @@ async function test() {
 			}
 		}
 	}
-	console.log("zip.terminateWorkers()");
+	// zip.terminateWorkers()
 }

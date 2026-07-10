@@ -5,7 +5,7 @@ import * as zip from "../../index.js";
 export { test };
 
 async function test() {
-	zip.configure({ chunkSize: 128, useWebWorkers: true });
+	zip.configure({ chunkSize: 128 });
 	const readable = (await fetch(new URL("../data/lorem-invalid-uncompressed-size.zip", import.meta.url))).body;
 	const zipReader = new zip.ZipReader(readable);
 	const entries = await zipReader.getEntries();
@@ -18,6 +18,6 @@ async function test() {
 		}
 		await zipReader.close();
 	} finally {
-		console.log("zip.terminateWorkers()");
+		// zip.terminateWorkers()
 	}
 }
