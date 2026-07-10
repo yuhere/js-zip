@@ -33,11 +33,6 @@ import {
 	UNDEFINED_TYPE
 } from "./constants.js";
 
-import { 
-	CompressionStream as JSCompressionStream, DecompressionStream as JSDecompressionStream,
-	CompressionStreamZlib, DecompressionStreamZlib 
-} from "./streams/zlib-js/zlib-streams.js";
-
 const MINIMUM_CHUNK_SIZE = 64;
 let maxWorkers = 2;
 try {
@@ -52,10 +47,6 @@ const DEFAULT_CONFIGURATION = {
 	// 
 	useCompressionStream: true,
 	chunkSize: 64 * 1024,
-	CompressionStream: typeof CompressionStream != UNDEFINED_TYPE ? CompressionStream : JSCompressionStream,
-	DecompressionStream: typeof DecompressionStream != UNDEFINED_TYPE ? DecompressionStream : JSDecompressionStream,
-	// #########
-	CompressionStreamZlib, DecompressionStreamZlib
 };
 
 const config = Object.assign({}, DEFAULT_CONFIGURATION);
@@ -79,18 +70,10 @@ function configure(configuration) {
 		chunkSize,
 		maxWorkers,
 		useCompressionStream,
-		CompressionStream,
-		DecompressionStream,
-		CompressionStreamZlib,
-		DecompressionStreamZlib
 	} = configuration;
 	setIfDefined("chunkSize", chunkSize);
 	setIfDefined("maxWorkers", maxWorkers);
 	setIfDefined("useCompressionStream", useCompressionStream);
-	setIfDefined("CompressionStream", CompressionStream);
-	setIfDefined("DecompressionStream", DecompressionStream);
-	setIfDefined("CompressionStreamZlib", CompressionStreamZlib);
-	setIfDefined("DecompressionStreamZlib", DecompressionStreamZlib);
 }
 
 function setIfDefined(propertyName, propertyValue) {

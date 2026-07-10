@@ -1,4 +1,3 @@
-
 import { UNDEFINED_VALUE } from "./constants.js";
 import {
     CodecStream,
@@ -9,8 +8,8 @@ export {
     codec
 };
 
-async function codec(stream, workerOptions) {
-    const { options, config, streamOptions } = workerOptions;
+async function codec(stream, codecOptions) {
+    const { options, config, streamOptions } = codecOptions;
     const { useCompressionStream } = options;
     options.useCompressionStream = useCompressionStream || (useCompressionStream === UNDEFINED_VALUE && config.useCompressionStream);
     // #############
@@ -19,7 +18,6 @@ async function codec(stream, workerOptions) {
     const readable_a = readable
         .pipeThrough(new ChunkStream(config.chunkSize))
         .pipeThrough(new ProgressWatcherStream(streamOptions), { signal });
-
     // #############
     return await run({ readable: readable_a, writable }, options, config, streamOptions);
 }

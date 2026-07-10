@@ -87,6 +87,7 @@ import {
 	MIN_DATE,
 	MAX_DATE,
 	UNDEFINED_VALUE,
+	UNDEFINED_TYPE,
 	INFINITY_VALUE,
 	OBJECT_TYPE
 } from "./constants.js";
@@ -162,6 +163,18 @@ import {
 import {
 	ZipReader
 } from "./zip-reader.js";
+
+import {
+	CompressionStream as JSCompressionStream, CompressionStreamZlib,
+	DecompressionStream as JSDecompressionStream, DecompressionStreamZlib
+} from "./streams/zlib-js/zlib-streams.js";
+
+const zlibCfg = {
+	CompressionStream: typeof CompressionStream != UNDEFINED_TYPE ? CompressionStream : JSCompressionStream,
+	CompressionStreamZlib,
+	DecompressionStream: typeof DecompressionStream != UNDEFINED_TYPE ? DecompressionStream : JSDecompressionStream,
+	DecompressionStreamZlib
+};
 
 const ERR_DUPLICATED_NAME = "File already exists";
 const ERR_INVALID_COMMENT = "Zip file comment exceeds 64KB";
@@ -546,7 +559,7 @@ async function addFile(zipWriter, name, reader, options) {
 	if (level !== UNDEFINED_VALUE && level != 6) {
 		useCompressionStream = false;
 	}
-	if (!useCompressionStream && (zipWriter.config.CompressionStream === UNDEFINED_VALUE && zipWriter.config.CompressionStreamZlib === UNDEFINED_VALUE)) {
+	if (!useCompressionStream && (CompressionStream === UNDEFINED_VALUE && CompressionStreamZlib === UNDEFINED_VALUE)) {
 		level = 0;
 	}
 	let zip64 = getOptionValue(zipWriter, options, PROPERTY_NAME_ZIP64);
@@ -949,7 +962,7 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 				useCompressionStream,
 				transferStreams
 			},
-			config,
+			config: { ...zlibCfg, chunkSize: getChunkSize(config) },
 			streamOptions: { signal, size, onstart, onprogress, onend }
 		};
 		try {

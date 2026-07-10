@@ -78,6 +78,7 @@ import {
 	HEADER_OFFSET_COMPRESSED_SIZE,
 	HEADER_OFFSET_UNCOMPRESSED_SIZE,
 	UNDEFINED_VALUE,
+	UNDEFINED_TYPE,
 	COMPRESSION_METHOD_DEFLATE_64,
 	FILE_ATTR_UNIX_SETUID_MASK,
 	FILE_ATTR_UNIX_SETGID_MASK,
@@ -143,6 +144,16 @@ import {
 	OPTION_TRANSFER_STREAMS,
 	OPTION_PREVENT_CLOSE
 } from "./options.js";
+
+import {
+	DecompressionStream as JSDecompressionStream,
+	DecompressionStreamZlib
+} from "./streams/zlib-js/zlib-streams.js";
+
+const zlibCfg = {
+	DecompressionStream: typeof DecompressionStream != UNDEFINED_TYPE ? DecompressionStream : JSDecompressionStream,
+	DecompressionStreamZlib
+}
 
 const ERR_BAD_FORMAT = "File format is not recognized";
 const ERR_EOCDR_NOT_FOUND = "End of central directory not found";
@@ -579,7 +590,7 @@ class ZipEntry {
 				deflate64,
 				checkPasswordOnly
 			},
-			config,
+			config: { ...zlibCfg, chunkSize: getChunkSize(config) },
 			streamOptions: { signal, size, onstart, onprogress, onend }
 		};
 		if (checkOverlappingEntry) {
