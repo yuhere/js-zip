@@ -33,6 +33,11 @@ import {
 	UNDEFINED_TYPE
 } from "./constants.js";
 
+import { 
+	CompressionStream as JSCompressionStream, DecompressionStream as JSDecompressionStream,
+	CompressionStreamZlib, DecompressionStreamZlib 
+} from "./streams/zlib-js/zlib-streams.js";
+
 const MINIMUM_CHUNK_SIZE = 64;
 let maxWorkers = 2;
 try {
@@ -43,15 +48,14 @@ try {
 	// ignored
 }
 const DEFAULT_CONFIGURATION = {
-	workerURI: "./core/web-worker-wasm.js",
-	wasmURI: "./core/streams/zlib-wasm/zlib-streams.wasm",
-	chunkSize: 64 * 1024,
 	maxWorkers,
-	terminateWorkerTimeout: 5000,
-	useWebWorkers: true,
+	// 
 	useCompressionStream: true,
-	CompressionStream: typeof CompressionStream != UNDEFINED_TYPE && CompressionStream,
-	DecompressionStream: typeof DecompressionStream != UNDEFINED_TYPE && DecompressionStream
+	chunkSize: 64 * 1024,
+	CompressionStream: typeof CompressionStream != UNDEFINED_TYPE ? CompressionStream : JSCompressionStream,
+	DecompressionStream: typeof DecompressionStream != UNDEFINED_TYPE ? DecompressionStream : JSDecompressionStream,
+	// #########
+	CompressionStreamZlib, DecompressionStreamZlib
 };
 
 const config = Object.assign({}, DEFAULT_CONFIGURATION);
@@ -72,27 +76,17 @@ function getChunkSize(config) {
 
 function configure(configuration) {
 	const {
-		baseURI,
 		chunkSize,
 		maxWorkers,
-		terminateWorkerTimeout,
 		useCompressionStream,
-		useWebWorkers,
 		CompressionStream,
 		DecompressionStream,
 		CompressionStreamZlib,
-		DecompressionStreamZlib,
-		workerURI,
-		wasmURI
+		DecompressionStreamZlib
 	} = configuration;
-	setIfDefined("baseURI", baseURI);
-	setIfDefined("wasmURI", wasmURI);
-	setIfDefined("workerURI", workerURI);
 	setIfDefined("chunkSize", chunkSize);
 	setIfDefined("maxWorkers", maxWorkers);
-	setIfDefined("terminateWorkerTimeout", terminateWorkerTimeout);
 	setIfDefined("useCompressionStream", useCompressionStream);
-	setIfDefined("useWebWorkers", useWebWorkers);
 	setIfDefined("CompressionStream", CompressionStream);
 	setIfDefined("DecompressionStream", DecompressionStream);
 	setIfDefined("CompressionStreamZlib", CompressionStreamZlib);

@@ -141,7 +141,6 @@ import {
 	OPTION_RAW_PASSWORD,
 	OPTION_PASS_THROUGH,
 	OPTION_SIGNAL,
-	OPTION_USE_WEB_WORKERS,
 	OPTION_USE_COMPRESSION_STREAM,
 	OPTION_TRANSFER_STREAMS,
 	OPTION_PREVENT_CLOSE,
@@ -528,7 +527,6 @@ async function addFile(zipWriter, name, reader, options) {
 	const zipCrypto = getOptionValue(zipWriter, options, PROPERTY_NAME_ZIPCRYPTO);
 	const extendedTimestamp = getOptionValue(zipWriter, options, OPTION_EXTENDED_TIMESTAMP, true);
 	const keepOrder = getOptionValue(zipWriter, options, OPTION_KEEP_ORDER, true);
-	const useWebWorkers = getOptionValue(zipWriter, options, OPTION_USE_WEB_WORKERS);
 	const transferStreams = getOptionValue(zipWriter, options, OPTION_TRANSFER_STREAMS, true);
 	const bufferedWrite = getOptionValue(zipWriter, options, OPTION_BUFFERED_WRITE);
 	const createTempStream = getOptionValue(zipWriter, options, OPTION_CREATE_TEMP_STREAM);
@@ -631,7 +629,6 @@ async function addFile(zipWriter, name, reader, options) {
 		password,
 		rawPassword,
 		level,
-		useWebWorkers,
 		transferStreams,
 		encryptionStrength,
 		extendedTimestamp,
@@ -870,7 +867,6 @@ async function createFileEntry(reader, writer, { diskNumberStart, lock }, entryI
 		versionMadeBy,
 		rawComment,
 		rawExtraField,
-		useWebWorkers,
 		transferStreams,
 		onstart,
 		onprogress,

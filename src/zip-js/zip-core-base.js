@@ -28,12 +28,6 @@
 
 import { configure } from "./core/configuration.js";
 
-try {
-	configure({ baseURI: import.meta.url });
-} catch {
-	// ignored
-}
-
 export * from "./zip-core-reader.js";
 export * from "./zip-core-writer.js";
 export {

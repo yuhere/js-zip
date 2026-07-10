@@ -27,4 +27,4 @@
  */
 
 export * from "./zip-core-base.js";
-export * from "./zip-module-native.js";
+

@@ -755,8 +755,8 @@ class GenericWriter {
 }
 
 function isHttpFamily(url) {
-	const { baseURI } = getConfiguration();
-	const { protocol } = new URL(url, baseURI);
+	console.log("isHttpFamily", url);
+	const { protocol } = new URL(url, window.location.origin);
 	return protocol == "http:" || protocol == "https:";
 }
 

@@ -1,13 +1,14 @@
 var {
-        Uint8Array: x,
-        Uint16Array: E,
-        Int32Array: H,
-        TransformStream: U,
-        Math: N,
-        Error: z,
-        Array: v,
-    } = globalThis,
-    Se = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15],
+    Uint8Array: x,
+    Uint16Array: E,
+    Int32Array: H,
+    TransformStream: U,
+    Math: N,
+    Error: z,
+    Array: v,
+} = globalThis;
+
+var Se = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15],
     F = new x(0),
     qe = new E(0),
     de = [];
@@ -16,9 +17,9 @@ de.push(0, 1);
 var Ee = [];
 for (let e = 0; e < 14; e++) Ee.push(e, 0 == e ? 4 : 2);
 var ge = new E([
-        0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384,
-        512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384, 24576,
-    ]),
+    0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384,
+    512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384, 24576,
+]),
     Te = new E([
         0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56,
         64, 80, 96, 112, 128, 160, 192, 224, 0,
@@ -71,10 +72,10 @@ function te(e) {
     return new E(t);
 }
 var ne = class {
-        constructor(e, t) {
-            (this.L = e), (this.M = t), (this.F = 0);
-        }
-    },
+    constructor(e, t) {
+        (this.L = e), (this.M = t), (this.F = 0);
+    }
+},
     re = class {
         constructor(e, t, n, r, i) {
             (this.q = e),
@@ -371,7 +372,7 @@ function he(e, t, n) {
         for (let i = 0; i < n; i++) r += e += t[i];
         return e >= 65521 && (e -= 65521), (r = Pe(r)), ((r << 16) | e) >>> 0;
     }
-    for (; n >= 5552; ) {
+    for (; n >= 5552;) {
         n -= 5552;
         let i = N.floor(347);
         do {
@@ -381,7 +382,7 @@ function he(e, t, n) {
         (e = Pe(e)), (r = Pe(r));
     }
     if (n) {
-        for (; n >= 16; ) {
+        for (; n >= 16;) {
             n -= 16;
             for (let n = 0; n < 16; n++) r += e += t[n];
             t = t.subarray(16);
@@ -432,9 +433,9 @@ function Sn(e, t, n) {
 function L(e, t, n) {
     e.I > Ue - n
         ? ((e.p = 65535 & (e.p | (t << e.I))),
-          De(e, e.p),
-          (e.p = (t >> (Ue - e.I)) & 65535),
-          (e.I += n - Ue))
+            De(e, e.p),
+            (e.p = (t >> (Ue - e.I)) & 65535),
+            (e.I += n - Ue))
         : ((e.p = 65535 & (e.p | (t << e.I))), (e.I += n));
 }
 function ht(e) {
@@ -483,7 +484,7 @@ function k_(e, t, n) {
         ;
         i <= e.Ve &&
         (i < e.Ve && ft(t, e.pe[i + 1], e.pe[i], e.Ie) && i++,
-        !ft(t, r, e.pe[i], e.Ie));
+            !ft(t, r, e.pe[i], e.Ie));
 
     )
         (e.pe[n] = e.pe[i]), (n = i), (i <<= 1);
@@ -510,7 +511,7 @@ function gn(e, t) {
             f > h && ((f = h), d++),
             (o[r].De = f),
             !(r > u) &&
-                (e.ze[f]++,
+            (e.ze[f]++,
                 (_ = 0),
                 r >= s && (_ = c[r - s]),
                 (l = o[r].Z),
@@ -518,15 +519,15 @@ function gn(e, t) {
                 a && (e.fe += l * (a[r].De + _)));
     if (0 != d) {
         do {
-            for (f = h - 1; 0 == e.ze[f]; ) f--;
+            for (f = h - 1; 0 == e.ze[f];) f--;
             e.ze[f]--, (e.ze[f + 1] += 2), e.ze[h]--, (d -= 2);
         } while (d > 0);
         for (f = h; 0 != f; f--)
-            for (r = e.ze[f]; 0 != r; )
+            for (r = e.ze[f]; 0 != r;)
                 (i = e.pe[--n]),
                     !(i > u) &&
-                        (o[i].De != f &&
-                            ((e.ie += (f - o[i].De) * o[i].Z), (o[i].De = f)),
+                    (o[i].De != f &&
+                        ((e.ie += (f - o[i].De) * o[i].Z), (o[i].De = f)),
                         r--);
     }
 }
@@ -540,7 +541,7 @@ function I_(e, t) {
         o = -1;
     for (e.Ve = 0, e.We = le, n = 0; n < l; n++)
         0 != f[n].Z ? ((e.pe[++e.Ve] = o = n), (e.Ie[n] = 0)) : (f[n].De = 0);
-    for (; e.Ve < 2; )
+    for (; e.Ve < 2;)
         (i = e.pe[++e.Ve] = o < 2 ? ++o : 0),
             (f[i].Z = 1),
             (e.Ie[i] = 0),
@@ -577,20 +578,20 @@ function ut(e, t, n) {
         (i = _),
             (_ = t[r + 1].De),
             !(++l < o && i == _) &&
-                (l < u
-                    ? (e.Se[i].Z += l)
-                    : 0 != i
+            (l < u
+                ? (e.Se[i].Z += l)
+                : 0 != i
                     ? (i != f && e.Se[i].Z++, e.Se[t_].Z++)
                     : l <= 10
-                    ? e.Se[n_].Z++
-                    : e.Se[r_].Z++,
+                        ? e.Se[n_].Z++
+                        : e.Se[r_].Z++,
                 (l = 0),
                 (f = i),
                 0 == _
                     ? ((o = 138), (u = 3))
                     : i == _
-                    ? ((o = 6), (u = 3))
-                    : ((o = 7), (u = 4)));
+                        ? ((o = 6), (u = 3))
+                        : ((o = 7), (u = 4)));
 }
 function ct(e, t, n) {
     let r,
@@ -609,18 +610,18 @@ function ct(e, t, n) {
             else
                 0 != r
                     ? (r != i && (L(e, e.Se[r].Qe, e.Se[r].De), _--),
-                      L(e, e.Se[t_].Qe, e.Se[t_].De),
-                      L(e, _ - 3, 2))
+                        L(e, e.Se[t_].Qe, e.Se[t_].De),
+                        L(e, _ - 3, 2))
                     : _ <= 10
-                    ? (L(e, e.Se[n_].Qe, e.Se[n_].De), L(e, _ - 3, 3))
-                    : (L(e, e.Se[r_].Qe, e.Se[r_].De), L(e, _ - 11, 7));
+                        ? (L(e, e.Se[n_].Qe, e.Se[n_].De), L(e, _ - 3, 3))
+                        : (L(e, e.Se[r_].Qe, e.Se[r_].De), L(e, _ - 11, 7));
             (_ = 0),
                 (i = r),
                 0 == f
                     ? ((l = 138), (o = 3))
                     : r == f
-                    ? ((l = 6), (o = 3))
-                    : ((l = 7), (o = 4));
+                        ? ((l = 6), (o = 3))
+                        : ((l = 7), (o = 4));
         }
 }
 function Tn(e) {
@@ -667,14 +668,14 @@ function dt(e, t, n) {
                 0 == r
                     ? L(e, t[i].Qe, t[i].De)
                     : ((f = __[i]),
-                      L(e, t[f + ie + 1].Qe, t[f + ie + 1].De),
-                      (_ = a_[f]),
-                      0 != _ && ((i -= Te[f]), L(e, i, _)),
-                      r--,
-                      (f = T_(r)),
-                      L(e, n[f].Qe, n[f].De),
-                      (_ = i_[f]),
-                      0 != _ && ((r -= ge[f]), L(e, r, _)));
+                        L(e, t[f + ie + 1].Qe, t[f + ie + 1].De),
+                        (_ = a_[f]),
+                        0 != _ && ((i -= Te[f]), L(e, i, _)),
+                        r--,
+                        (f = T_(r)),
+                        L(e, n[f].Qe, n[f].De),
+                        (_ = i_[f]),
+                        0 != _ && ((r -= ge[f]), L(e, r, _)));
         } while (l < e.D);
     L(e, t[ke].Qe, t[ke].De);
 }
@@ -692,20 +693,20 @@ function St(e, t, n, r, i = 0) {
         l = 0;
     e.ge > 0
         ? (2 == e.o.t && (e.o.t = An(e)),
-          I_(e, e.$e),
-          I_(e, e.Ae),
-          (l = Tn(e)),
-          (f = (e.ie + 3 + 7) >> 3),
-          (_ = (e.fe + 3 + 7) >> 3),
-          (_ <= f || 4 == e.ve) && (f = _))
+            I_(e, e.$e),
+            I_(e, e.Ae),
+            (l = Tn(e)),
+            (f = (e.ie + 3 + 7) >> 3),
+            (_ = (e.fe + 3 + 7) >> 3),
+            (_ <= f || 4 == e.ve) && (f = _))
         : (f = _ = n + 5),
         n + 4 <= f && t
             ? Me(e, t, n, r, i)
             : _ == f
-            ? (L(e, (y_ << 1) + r, 3), dt(e, Fe, v_))
-            : (L(e, (it << 1) + r, 3),
-              wn(e, e.$e.F + 1, e.Ae.F + 1, l + 1),
-              dt(e, e.C, e.T)),
+                ? (L(e, (y_ << 1) + r, 3), dt(e, Fe, v_))
+                : (L(e, (it << 1) + r, 3),
+                    wn(e, e.$e.F + 1, e.Ae.F + 1, l + 1),
+                    dt(e, e.C, e.T)),
         ht(e),
         r && bt(e);
 }
@@ -743,8 +744,8 @@ function Nn(e) {
     let t,
         n,
         r = e.h;
-    for (t = e.J; t > 0; ) t--, (n = e.K[t]), (e.K[t] = n >= r ? n - r : 0);
-    for (t = r; t > 0; ) t--, (n = e.j[t]), (e.j[t] = n >= r ? n - r : 0);
+    for (t = e.J; t > 0;) t--, (n = e.K[t]), (e.K[t] = n >= r ? n - r : 0);
+    for (t = r; t > 0;) t--, (n = e.j[t]), (e.j[t] = n >= r ? n - r : 0);
 }
 function C_(e, t, n, r) {
     let i = e.avail_in;
@@ -753,14 +754,14 @@ function C_(e, t, n, r) {
         0 == i
             ? 0
             : ((e.avail_in -= i),
-              M(t, n, e.next_in, e.next_in_index, i),
-              1 == e.l.G
-                  ? (e.i = he(e.i, new x(t.buffer, t.byteOffset + n, i), i))
-                  : 2 == e.l.G &&
+                M(t, n, e.next_in, e.next_in_index, i),
+                1 == e.l.G
+                    ? (e.i = he(e.i, new x(t.buffer, t.byteOffset + n, i), i))
+                    : 2 == e.l.G &&
                     (e.i = W(e.i, new x(t.buffer, t.byteOffset + n, i), i)),
-              (e.next_in_index += i),
-              (e.total_in += i),
-              i)
+                (e.next_in_index += i),
+                (e.total_in += i),
+                i)
     );
 }
 function c_(e) {
@@ -770,16 +771,16 @@ function c_(e) {
     do {
         if (
             ((n = e.qe - e.ce - e.ae),
-            0 == n && 0 == e.ae && 0 == e.ce ? (n = r) : -1 == n && n--,
-            e.ae >= r + ve(e) &&
+                0 == n && 0 == e.ae && 0 == e.ce ? (n = r) : -1 == n && n--,
+                e.ae >= r + ve(e) &&
                 (M(e.u, 0, e.u, r, r - n),
-                (e.Ne -= r),
-                (e.ae -= r),
-                (e.ue -= r),
-                e.le > e.ae && (e.le = e.ae),
-                Nn(e),
-                (n += r)),
-            0 == e.o.avail_in)
+                    (e.Ne -= r),
+                    (e.ae -= r),
+                    (e.ue -= r),
+                    e.le > e.ae && (e.le = e.ae),
+                    Nn(e),
+                    (n += r)),
+                0 == e.o.avail_in)
         )
             break;
         if (
@@ -790,11 +791,11 @@ function c_(e) {
                 e.be = e.u[t], e.be = f_(e, e.be, e.u[t + 1]);
                 e.le &&
                 ((e.be = f_(e, e.be, e.u[t + I - 1])),
-                (e.j[t & e.P] = e.K[e.be]),
-                (e.K[e.be] = t),
-                t++,
-                e.le--,
-                !(e.ce + e.le < I));
+                    (e.j[t & e.P] = e.K[e.be]),
+                    (e.K[e.be] = t),
+                    t++,
+                    e.le--,
+                    !(e.ce + e.le < I));
 
             );
         }
@@ -805,10 +806,10 @@ function c_(e) {
         e.k < n
             ? ((t = e.qe - n), t > Be && (t = Be), je(e.u, n, t), (e.k = n + t))
             : e.k < n + Be &&
-              ((t = n + Be - e.k),
-              t > e.qe - e.k && (t = e.qe - e.k),
-              je(e.u, e.k, t),
-              (e.k += t));
+            ((t = n + Be - e.k),
+                t > e.qe - e.k && (t = e.qe - e.k),
+                je(e.u, e.k, t),
+                (e.k += t));
     }
 }
 function Dt(e, t, n = 8, r = 15, i = He, f = 0) {
@@ -835,33 +836,33 @@ function Dt(e, t, n = 8, r = 15, i = He, f = 0) {
     let l = w_(e);
     return l
         ? ((e.l = l),
-          (l.o = e),
-          (l.R = 42),
-          (l.G = _),
-          (l.O = void 0),
-          (l.v = r),
-          (l.h = 1 << l.v),
-          (l.P = l.h - 1),
-          (l.H = i + 7),
-          (l.J = 1 << l.H),
-          (l.X = l.J - 1),
-          (l.Y = (l.H + I - 1) / I),
-          (l.u = new x(2 * l.h)),
-          (l.j = new E(l.h)),
-          (l.K = new E(l.J)),
-          (l.k = 0),
-          (l.ee = 1 << (i + 6)),
-          (l.$ = new x(l.ee * rt)),
-          (l.ne = 4 * l.ee),
-          l.u && l.j && l.K && l.$
-              ? ((l.Le = l.$.subarray(l.ee)),
-                (l.U = l.te + l.ee),
-                (l.B = 3 * (l.ee - 1)),
-                (l.ge = t),
-                (l.ve = f),
-                (l.Fe = n),
-                Cn(e))
-              : ((l.R = 666), (e.msg = g_(-4)), B_(e), -4))
+            (l.o = e),
+            (l.R = 42),
+            (l.G = _),
+            (l.O = void 0),
+            (l.v = r),
+            (l.h = 1 << l.v),
+            (l.P = l.h - 1),
+            (l.H = i + 7),
+            (l.J = 1 << l.H),
+            (l.X = l.J - 1),
+            (l.Y = (l.H + I - 1) / I),
+            (l.u = new x(2 * l.h)),
+            (l.j = new E(l.h)),
+            (l.K = new E(l.J)),
+            (l.k = 0),
+            (l.ee = 1 << (i + 6)),
+            (l.$ = new x(l.ee * rt)),
+            (l.ne = 4 * l.ee),
+            l.u && l.j && l.K && l.$
+                ? ((l.Le = l.$.subarray(l.ee)),
+                    (l.U = l.te + l.ee),
+                    (l.B = 3 * (l.ee - 1)),
+                    (l.ge = t),
+                    (l.ve = f),
+                    (l.Fe = n),
+                    Cn(e))
+                : ((l.R = 666), (e.msg = g_(-4)), B_(e), -4))
         : -4;
 }
 function U_(e) {
@@ -885,17 +886,17 @@ function Rn(e) {
     return U_(e)
         ? -2
         : ((e.total_in = e.total_out = 0),
-          (e.msg = ''),
-          (e.t = 2),
-          (t = e.l),
-          (t.A = 0),
-          (t.re = t.te),
-          t.G < 0 && (t.G = -t.G),
-          (t.R = 2 == t.G ? 57 : 42),
-          (e.i = 2 == t.G ? W(0) : he(0)),
-          (t.oe = -2),
-          st(t),
-          0);
+            (e.msg = ''),
+            (e.t = 2),
+            (t = e.l),
+            (t.A = 0),
+            (t.re = t.te),
+            t.G < 0 && (t.G = -t.G),
+            (t.R = 2 == t.G ? 57 : 42),
+            (e.i = 2 == t.G ? W(0) : he(0)),
+            (t.oe = -2),
+            st(t),
+            0);
 }
 function zn(e) {
     (e.qe = 2 * e.h),
@@ -926,7 +927,7 @@ function q(e) {
         (t = n.A),
         t > e.avail_out && (t = e.avail_out),
         0 != t &&
-            (M(e.next_out, e.next_out_index, n.$, n.re, t),
+        (M(e.next_out, e.next_out_index, n.$, n.re, t),
             (e.next_out_index += t),
             (n.re += t),
             (e.total_out += t),
@@ -960,15 +961,15 @@ function yt(e, t) {
             n = (8 + ((r.v - 8) << 4)) << 8;
         if (
             ((t = r.ve >= 2 || r.ge < 2 ? 0 : r.ge < 6 ? 1 : 6 == r.ge ? 2 : 3),
-            (n |= t << 6),
-            0 != r.ae && (n |= nt),
-            (n += 31 - (n % 31)),
-            Ye(r, n),
-            0 != r.ae && (Ye(r, e.i >> 16), Ye(r, 65535 & e.i)),
-            (e.i = 1),
-            (r.R = 113),
-            q(e),
-            0 != r.A)
+                (n |= t << 6),
+                0 != r.ae && (n |= nt),
+                (n += 31 - (n % 31)),
+                Ye(r, n),
+                0 != r.ae && (Ye(r, e.i >> 16), Ye(r, 65535 & e.i)),
+                (e.i = 1),
+                (r.R = 113),
+                q(e),
+                0 != r.A)
         )
             return (r.oe = $), 0;
     }
@@ -977,10 +978,10 @@ function yt(e, t) {
             g(
                 r,
                 (r.O.Pe ? 1 : 0) +
-                    (r.O.Oe ? 2 : 0) +
-                    (null == r.O.He ? 0 : 4) +
-                    (null == r.O.Je ? 0 : 8) +
-                    (null == r.O.Xe ? 0 : 16)
+                (r.O.Oe ? 2 : 0) +
+                (null == r.O.He ? 0 : 4) +
+                (null == r.O.Je ? 0 : 8) +
+                (null == r.O.Xe ? 0 : 16)
             ),
                 g(r, 255 & r.O.Ye),
                 g(r, (r.O.Ye >>> 8) & 255),
@@ -989,36 +990,36 @@ function yt(e, t) {
                 g(r, 9 == r.ge ? 2 : r.ve >= 2 || r.ge < 2 ? 4 : 0),
                 g(r, 255 & r.O.je),
                 null != r.O.He &&
-                    (g(r, 255 & r.O.Ke), g(r, (r.O.Ke >>> 8) & 255)),
+                (g(r, 255 & r.O.Ke), g(r, (r.O.Ke >>> 8) & 255)),
                 r.O.Oe && (e.i = W(e.i, r.$, r.A)),
                 (r.Me = 0),
                 (r.R = 69);
         else if (
             (g(r, 0),
-            g(r, 0),
-            g(r, 0),
-            g(r, 0),
-            g(r, 0),
-            g(r, 9 == r.ge ? 2 : r.ve >= 2 || r.ge < 2 ? 4 : 0),
-            g(r, tt),
-            (r.R = 113),
-            q(e),
-            0 != r.A)
+                g(r, 0),
+                g(r, 0),
+                g(r, 0),
+                g(r, 0),
+                g(r, 9 == r.ge ? 2 : r.ve >= 2 || r.ge < 2 ? 4 : 0),
+                g(r, tt),
+                (r.R = 113),
+                q(e),
+                0 != r.A)
         )
             return (r.oe = $), 0;
     if (69 == r.R) {
         if (r.O && null != r.O.He) {
             let t = r.A,
                 n = (65535 & r.O.Ke) - r.Me;
-            for (; r.A + n > r.ne; ) {
+            for (; r.A + n > r.ne;) {
                 let i = r.ne - r.A;
                 if (
                     (M(r.$, r.A, r.O.He, r.Me, i),
-                    (r.A = r.ne),
-                    Ie(e, t),
-                    (r.Me += i),
-                    q(e),
-                    0 != r.A)
+                        (r.A = r.ne),
+                        Ie(e, t),
+                        (r.Me += i),
+                        q(e),
+                        0 != r.A)
                 )
                     return (r.oe = $), 0;
                 (t = 0), (n -= i);
@@ -1069,10 +1070,10 @@ function yt(e, t) {
             0 == r.ge
                 ? It(r, t)
                 : 2 == r.ve
-                ? On(r, t)
-                : 3 == r.ve
-                ? Ln(r, t)
-                : Xe[r.ge].Ce(r, t);
+                    ? On(r, t)
+                    : 3 == r.ve
+                        ? Ln(r, t)
+                        : Xe[r.ge].Ce(r, t);
         if (((2 == n || 3 == n) && (r.R = 666), 0 == n || 2 == n))
             return 0 == e.avail_out && (r.oe = $), 0;
         if (
@@ -1080,32 +1081,32 @@ function yt(e, t) {
             (1 == t
                 ? pt(r)
                 : 5 != t &&
-                  (Me(r, null, 0, 0),
-                  3 == t &&
-                      (At(r),
-                      0 == r.ce && ((r.ae = 0), (r.ue = 0), (r.le = 0)))),
-            q(e),
-            0 == e.avail_out)
+                (Me(r, null, 0, 0),
+                    3 == t &&
+                    (At(r),
+                        0 == r.ce && ((r.ae = 0), (r.ue = 0), (r.le = 0)))),
+                q(e),
+                0 == e.avail_out)
         )
             return (r.oe = $), 0;
     }
     return 4 != t
         ? 0
         : r.G <= 0
-        ? 1
-        : (2 == r.G
-              ? (g(r, 255 & e.i),
-                g(r, (e.i >>> 8) & 255),
-                g(r, (e.i >>> 16) & 255),
-                g(r, (e.i >>> 24) & 255),
-                g(r, 255 & e.total_in),
-                g(r, (e.total_in >>> 8) & 255),
-                g(r, (e.total_in >>> 16) & 255),
-                g(r, (e.total_in >>> 24) & 255))
-              : (Ye(r, (e.i >>> 16) & 65535), Ye(r, 65535 & e.i)),
-          q(e),
-          r.G > 0 && (r.G = -r.G),
-          0 != r.A ? 0 : 1);
+            ? 1
+            : (2 == r.G
+                ? (g(r, 255 & e.i),
+                    g(r, (e.i >>> 8) & 255),
+                    g(r, (e.i >>> 16) & 255),
+                    g(r, (e.i >>> 24) & 255),
+                    g(r, 255 & e.total_in),
+                    g(r, (e.total_in >>> 8) & 255),
+                    g(r, (e.total_in >>> 16) & 255),
+                    g(r, (e.total_in >>> 24) & 255))
+                : (Ye(r, (e.i >>> 16) & 65535), Ye(r, 65535 & e.i)),
+                q(e),
+                r.G > 0 && (r.G = -r.G),
+                0 != r.A ? 0 : 1);
 }
 function B_(e) {
     if (U_(e)) return -2;
@@ -1148,7 +1149,7 @@ function vt(e, t) {
     do {
         if (
             ((n = t),
-            e.u[n + _] != d ||
+                e.u[n + _] != d ||
                 e.u[n + _ - 1] != h ||
                 e.u[n] != c ||
                 e.u[n + 1] != s)
@@ -1156,7 +1157,7 @@ function vt(e, t) {
             continue;
         let i = N.min(_e, e.ce),
             o = 2;
-        for (; o < i && e.u[f + o] == e.u[n + o]; ) o++;
+        for (; o < i && e.u[f + o] == e.u[n + o];) o++;
         if (((r = o), r > _)) {
             if (((e.Ne = t), (_ = r), r >= l)) break;
             (h = e.u[f + _ - 1]), (d = e.u[f + _]);
@@ -1184,13 +1185,13 @@ function It(e, t) {
     do {
         if (
             ((n = gt),
-            (i = (e.I + 42) >> 3),
-            e.o.avail_out < i ||
+                (i = (e.I + 42) >> 3),
+                e.o.avail_out < i ||
                 ((i = e.o.avail_out - i),
-                (r = e.ae - e.ue),
-                n > r + e.o.avail_in && (n = r + e.o.avail_in),
-                n > i && (n = i),
-                n < f &&
+                    (r = e.ae - e.ue),
+                    n > r + e.o.avail_in && (n = r + e.o.avail_in),
+                    n > i && (n = i),
+                    n < f &&
                     ((0 == n && 4 != t) || 0 == t || n != r + e.o.avail_in)))
         )
             break;
@@ -1202,7 +1203,7 @@ function It(e, t) {
             (e.$[e.A - 1] = ~n >> 8),
             q(e.o),
             r &&
-                (r > n && (r = n),
+            (r > n && (r = n),
                 M(e.o.next_out, e.o.next_out_index, e.u, e.ue, r),
                 (e.o.next_out_index += r),
                 (e.o.avail_out -= r),
@@ -1210,7 +1211,7 @@ function It(e, t) {
                 (e.ue += r),
                 (n -= r)),
             n &&
-                (C_(e.o, e.o.next_out, e.o.next_out_index, n),
+            (C_(e.o, e.o.next_out, e.o.next_out_index, n),
                 (e.o.next_out_index += n),
                 (e.o.avail_out -= n),
                 (e.o.total_out += n));
@@ -1223,9 +1224,9 @@ function It(e, t) {
         } else
             e.qe - e.ae <= l &&
                 ((e.ae -= e.h),
-                M(e.u, 0, e.u, e.h, e.ae),
-                e._e < 2 && e._e++,
-                e.le > e.ae && (e.le = e.ae)),
+                    M(e.u, 0, e.u, e.h, e.ae),
+                    e._e < 2 && e._e++,
+                    e.le > e.ae && (e.le = e.ae)),
                 M(e.u, e.ae, e.o.next_in, e.o.next_in_index - l, l),
                 (e.ae += l),
                 (e.le += Ne(l, e.h - e.le));
@@ -1236,58 +1237,58 @@ function It(e, t) {
         _
             ? ((e.Ee = 8), 3)
             : 0 != t && 4 != t && 0 == e.o.avail_in && e.ae == e.ue
-            ? 1
-            : ((i = e.qe - e.ae),
-              e.o.avail_in > i &&
-                  e.ue >= e.h &&
-                  ((e.ue -= e.h),
-                  (e.ae -= e.h),
-                  M(e.u, 0, e.u, e.h, e.ae),
-                  e._e < 2 && e._e++,
-                  (i += e.h),
-                  e.le > e.ae && (e.le = e.ae)),
-              i > e.o.avail_in && (i = e.o.avail_in),
-              i &&
-                  (C_(e.o, e.u, e.ae, i),
-                  (e.ae += i),
-                  (e.le += Ne(i, e.h - e.le))),
-              e.k < e.ae && (e.k = e.ae),
-              (i = (e.I + 42) >> 3),
-              (i = Ne(e.ne - i, gt)),
-              (f = Ne(i, e.h)),
-              (r = e.ae - e.ue),
-              (r >= f ||
-                  ((r || 4 == t) && 0 != t && 0 == e.o.avail_in && r <= i)) &&
-                  ((n = Ne(r, i)),
-                  (_ = 4 == t && 0 == e.o.avail_in && n == r ? 1 : 0),
-                  Me(e, e.u, n, _, e.ue),
-                  (e.ue += n),
-                  q(e.o)),
-              _ && (e.Ee = 8),
-              _ ? 2 : 0)
+                ? 1
+                : ((i = e.qe - e.ae),
+                    e.o.avail_in > i &&
+                    e.ue >= e.h &&
+                    ((e.ue -= e.h),
+                        (e.ae -= e.h),
+                        M(e.u, 0, e.u, e.h, e.ae),
+                        e._e < 2 && e._e++,
+                        (i += e.h),
+                        e.le > e.ae && (e.le = e.ae)),
+                    i > e.o.avail_in && (i = e.o.avail_in),
+                    i &&
+                    (C_(e.o, e.u, e.ae, i),
+                        (e.ae += i),
+                        (e.le += Ne(i, e.h - e.le))),
+                    e.k < e.ae && (e.k = e.ae),
+                    (i = (e.I + 42) >> 3),
+                    (i = Ne(e.ne - i, gt)),
+                    (f = Ne(i, e.h)),
+                    (r = e.ae - e.ue),
+                    (r >= f ||
+                        ((r || 4 == t) && 0 != t && 0 == e.o.avail_in && r <= i)) &&
+                    ((n = Ne(r, i)),
+                        (_ = 4 == t && 0 == e.o.avail_in && n == r ? 1 : 0),
+                        Me(e, e.u, n, _, e.ue),
+                        (e.ue += n),
+                        q(e.o)),
+                    _ && (e.Ee = 8),
+                    _ ? 2 : 0)
     );
 }
 function z_(e, t) {
     let n,
         r = !1;
-    for (;;) {
+    for (; ;) {
         if (e.ce < ae) {
             if ((c_(e), e.ce < ae && 0 == t)) return 0;
             if (0 == e.ce) break;
         }
         if (
             ((n = 0),
-            e.ce >= I && (n = u_(e, e.ae)),
-            0 != n && e.ae - n <= ve(e) && (e.se = vt(e, n)),
-            e.se >= I)
+                e.ce >= I && (n = u_(e, e.ae)),
+                0 != n && e.ae - n <= ve(e) && (e.se = vt(e, n)),
+                e.se >= I)
         )
             if (
                 (e.ae,
-                e.Ne,
-                e.se,
-                (r = e_(e, e.ae - e.Ne, e.se - I)),
-                (e.ce -= e.se),
-                e.se <= e.ye && e.ce >= I)
+                    e.Ne,
+                    e.se,
+                    (r = e_(e, e.ae - e.Ne, e.se - I)),
+                    (e.ce -= e.se),
+                    e.se <= e.ye && e.ce >= I)
             ) {
                 e.se--;
                 do {
@@ -1317,22 +1318,22 @@ function z_(e, t) {
 function Re(e, t) {
     let n,
         r = !1;
-    for (;;) {
+    for (; ;) {
         if (e.ce < ae) {
             if ((c_(e), e.ce < ae && 0 == t)) return 0;
             if (0 == e.ce) break;
         }
         if (
             ((n = 0),
-            e.ce >= I && (n = u_(e, e.ae)),
-            (e.he = e.se),
-            (e.de = e.Ne),
-            (e.se = I - 1),
-            0 != n &&
+                e.ce >= I && (n = u_(e, e.ae)),
+                (e.he = e.se),
+                (e.de = e.Ne),
+                (e.se = I - 1),
+                0 != n &&
                 e.he < e.ye &&
                 e.ae - n <= ve(e) &&
                 ((e.se = vt(e, n)), e.se <= 5 && 1 == e.ve && (e.se = I - 1)),
-            e.he >= I && e.se <= e.he)
+                e.he >= I && e.se <= e.he)
         ) {
             let t = e.ae + e.ce - I;
             e.ae,
@@ -1351,18 +1352,18 @@ function Re(e, t) {
         } else if (e.we) {
             if (
                 ((r = ye(e, e.u[e.ae - 1])),
-                r && kt(e, 0),
-                e.ae++,
-                e.ce--,
-                0 == e.o.avail_out)
+                    r && kt(e, 0),
+                    e.ae++,
+                    e.ce--,
+                    0 == e.o.avail_out)
             )
                 return 0;
         } else (e.we = 1), e.ae++, e.ce--;
     }
     if (
         (e.we && ((r = ye(e, e.u[e.ae - 1])), (e.we = 0)),
-        (e.le = e.ae < I - 1 ? e.ae : I - 1),
-        4 == t)
+            (e.le = e.ae < I - 1 ? e.ae : I - 1),
+            4 == t)
     ) {
         return V(e, !0) ?? 3;
     }
@@ -1374,21 +1375,21 @@ function Re(e, t) {
 }
 function Ln(e, t) {
     let n, r, i, f;
-    for (;;) {
+    for (; ;) {
         if (e.ce <= _e) {
             if ((c_(e), e.ce <= _e && 0 == t)) return 0;
             if (0 == e.ce) break;
         }
         if (
             ((e.se = 0),
-            e.ce >= I &&
+                e.ce >= I &&
                 e.ae > 0 &&
                 ((i = e.ae - 1),
-                (r = e.u[i]),
-                r == ++i && r == ++i && r == ++i))
+                    (r = e.u[i]),
+                    r == ++i && r == ++i && r == ++i))
         ) {
             f = e.ae + _e;
-            do {} while (
+            do { } while (
                 r == ++i &&
                 r == ++i &&
                 r == ++i &&
@@ -1404,14 +1405,14 @@ function Ln(e, t) {
         if (
             (e.se >= I
                 ? (e.ae,
-                  e.ae,
-                  e.se,
-                  (n = e_(e, 1, e.se - I)),
-                  (e.ce -= e.se),
-                  (e.ae += e.se),
-                  (e.se = 0))
+                    e.ae,
+                    e.se,
+                    (n = e_(e, 1, e.se - I)),
+                    (e.ce -= e.se),
+                    (e.ae += e.se),
+                    (e.se = 0))
                 : ((n = ye(e, e.u[e.ae])), e.ce--, e.ae++),
-            n)
+                n)
         ) {
             let t = V(e, !1);
             if (null != t) return t;
@@ -1428,7 +1429,7 @@ function Ln(e, t) {
 }
 function On(e, t) {
     let n = !1;
-    for (;;) {
+    for (; ;) {
         if (0 == e.ce && (c_(e), 0 == e.ce)) {
             if (0 == t) return 0;
             break;
@@ -1499,19 +1500,19 @@ function qt(e, t) {
         I = 0,
         z = 0;
     e: do {
-        for (; a < 15; ) {
+        for (; a < 15;) {
             if (!(i < _.length)) break e;
             (u += _[i++] << a), (a += 8);
         }
         n = c[u & h];
-        t: for (;;) {
+        t: for (; ;) {
             if (((I = n.ft), (u >>>= I), (a -= I), (I = n._t), 0 == I)) {
                 l[f++] = n.lt;
                 break;
             }
             if (16 & I) {
                 if (((y = n.lt), (I &= 15), I)) {
-                    for (; a < I; ) {
+                    for (; a < I;) {
                         if (!(i < _.length)) {
                             r.ot = 16200;
                             break e;
@@ -1520,7 +1521,7 @@ function qt(e, t) {
                     }
                     (y += u & ((1 << I) - 1)), (u >>>= I), (a -= I);
                 }
-                for (; a < 15; ) {
+                for (; a < 15;) {
                     if (!(i < _.length)) {
                         r.ot = 16200;
                         break e;
@@ -1528,12 +1529,12 @@ function qt(e, t) {
                     (u += _[i++] << a), (a += 8);
                 }
                 n = s[u & d];
-                n: for (;;) {
+                n: for (; ;) {
                     if (
                         ((I = n.ft), (u >>>= I), (a -= I), (I = n._t), 16 & I)
                     ) {
                         if (((p = n.lt), (I &= 15), I)) {
-                            for (; a < I; ) {
+                            for (; a < I;) {
                                 if (!(i < _.length)) {
                                     r.ot = 16200;
                                     break e;
@@ -1578,7 +1579,7 @@ function qt(e, t) {
                                 for (let e = 0; e < n; ++e) l[f++] = o[z++];
                                 (t -= n), (z = f - p);
                             }
-                            for (; t > 2; )
+                            for (; t > 2;)
                                 (l[f++] = l[z++]),
                                     (l[f++] = l[z++]),
                                     (l[f++] = l[z++]),
@@ -1586,7 +1587,7 @@ function qt(e, t) {
                             t &&
                                 ((l[f++] = l[z++]), t > 1 && (l[f++] = l[z++]));
                         } else {
-                            for (z = f - p; t > 2; )
+                            for (z = f - p; t > 2;)
                                 (l[f++] = l[z++]),
                                     (l[f++] = l[z++]),
                                     (l[f++] = l[z++]),
@@ -1757,19 +1758,19 @@ function Oe(e, t, n, r, i, f, _, l) {
     }
     if (
         ((g = 0),
-        (u = 0),
-        (o = a),
-        (p = _.Tt),
-        (h = s),
-        (d = 0),
-        (m = -1),
-        (b = 1 << s),
-        (x = b - 1),
-        (1 == e && (q.Zt ? b >= ue : b > ue)) ||
+            (u = 0),
+            (o = a),
+            (p = _.Tt),
+            (h = s),
+            (d = 0),
+            (m = -1),
+            (b = 1 << s),
+            (x = b - 1),
+            (1 == e && (q.Zt ? b >= ue : b > ue)) ||
             (2 == e && (q.Zt ? b >= q.Dt : b > q.Dt)))
     )
         return 1;
-    for (;;) {
+    for (; ;) {
         (y = Zn(f, u, o, d, e, I, z, L, q.Nt)),
             (v = 1 << (o - d)),
             (k = 1 << h),
@@ -1779,7 +1780,7 @@ function Oe(e, t, n, r, i, f, _, l) {
             let e = (g >> d) + k;
             r.Tt[p + e] = { ...y };
         } while (0 != k);
-        for (v = 1 << (o - 1); g & v; ) v >>= 1;
+        for (v = 1 << (o - 1); g & v;) v >>= 1;
         if ((0 != v ? ((g &= v - 1), (g += v)) : (g = 0), u++, 0 == --M[o])) {
             if (o == c) break;
             o = t[f[u]];
@@ -1793,7 +1794,7 @@ function Oe(e, t, n, r, i, f, _, l) {
                 h++, (w <<= 1);
             if (
                 ((b += 1 << h),
-                (1 == e && (q.Zt ? b >= ue : b > ue)) ||
+                    (1 == e && (q.Zt ? b >= ue : b > ue)) ||
                     (2 == e && (q.Zt ? b >= q.Dt : b > q.Dt)))
             )
                 return 1;
@@ -1801,13 +1802,13 @@ function Oe(e, t, n, r, i, f, _, l) {
         }
     }
     if (0 != g)
-        for (y = F_(o - d); 0 != g; ) {
+        for (y = F_(o - d); 0 != g;) {
             for (
                 0 != d &&
-                    (g & x) != m &&
-                    ((d = 0), (o = s), (p = _.Tt), (h = s), (y.ft = o)),
-                    r.Tt[p + (g >> d)] = { ...y },
-                    v = 1 << (o - 1);
+                (g & x) != m &&
+                ((d = 0), (o = s), (p = _.Tt), (h = s), (y.ft = o)),
+                r.Tt[p + (g >> d)] = { ...y },
+                v = 1 << (o - 1);
                 g & v;
 
             )
@@ -1843,12 +1844,12 @@ function Ge(e) {
     return !(
         e &&
         ((t = e.l),
-        !(
-            !t ||
-            t.o != e ||
-            (t.Nt && (t.ot < 16191 || t.ot > 16209)) ||
-            (!t.Nt && (t.ot < 16180 || t.ot > 16211))
-        ))
+            !(
+                !t ||
+                t.o != e ||
+                (t.Nt && (t.ot < 16191 || t.ot > 16209)) ||
+                (!t.Nt && (t.ot < 16180 || t.ot > 16211))
+            ))
     );
 }
 function Xn(e) {
@@ -1856,23 +1857,23 @@ function Xn(e) {
     return Ge(e)
         ? -2
         : ((t = e.l),
-          (e.total_in = e.total_out = t.wt = 0),
-          (e.msg = ''),
-          t.G && (e.i = 1 & t.G),
-          (t.ot = t.Nt ? 16191 : 16180),
-          (t.ut = !1),
-          (t.ct = !1),
-          (t.st = -1),
-          (t.ht = t.Nt ? 65536 : 32768),
-          delete t.O,
-          (t.p = 0),
-          (t.I = 0),
-          (t.et = t.Et),
-          (t.tt = t.Et),
-          (t.It = t.Et),
-          (t.it = !0),
-          (t.Ft = -1),
-          0);
+            (e.total_in = e.total_out = t.wt = 0),
+            (e.msg = ''),
+            t.G && (e.i = 1 & t.G),
+            (t.ot = t.Nt ? 16191 : 16180),
+            (t.ut = !1),
+            (t.ct = !1),
+            (t.st = -1),
+            (t.ht = t.Nt ? 65536 : 32768),
+            delete t.O,
+            (t.p = 0),
+            (t.I = 0),
+            (t.et = t.Et),
+            (t.tt = t.Et),
+            (t.It = t.Et),
+            (t.it = !0),
+            (t.Ft = -1),
+            0);
 }
 function Wn(e) {
     let t;
@@ -1888,9 +1889,9 @@ function Gn(e, t) {
     return t && (t < 8 || t > i)
         ? -2
         : (r.u.length > 0 && r.v != t && (r.u = F),
-          (r.G = n),
-          (r.v = t),
-          Wn(e));
+            (r.G = n),
+            (r.v = t),
+            Wn(e));
 }
 function _n(e, t) {
     let n, r;
@@ -1911,10 +1912,10 @@ function Kn(e) {
     let t = { Tt: 0 };
     if (Jt) {
         let n, r, i;
-        for (n = 0; n < 144; ) e.zt[n++] = 8;
-        for (; n < 256; ) e.zt[n++] = 9;
-        for (; n < 280; ) e.zt[n++] = 7;
-        for (; n < 288; ) e.zt[n++] = 8;
+        for (n = 0; n < 144;) e.zt[n++] = 8;
+        for (; n < 256;) e.zt[n++] = 9;
+        for (; n < 280;) e.zt[n++] = 7;
+        for (; n < 288;) e.zt[n++] = 8;
         for (let e = 0; e < 544; e++) Vt[e] = pe();
         (i = Vt), (Qt = i), (r = 9);
         let f = { Tt: i },
@@ -1922,10 +1923,10 @@ function Kn(e) {
             l = { Tt: 0 };
         for (
             Oe(1, e.zt, 288, f, _, e.Lt, l, e.Nt),
-                i = f.Tt,
-                r = _.Tt,
-                e.Mt = l.Tt,
-                n = 0;
+            i = f.Tt,
+            r = _.Tt,
+            e.Mt = l.Tt,
+            n = 0;
             n < 32;
 
         )
@@ -1953,8 +1954,8 @@ function qn(e, t, n) {
             (n -= e)
                 ? (M(r.u, 0, t, t.length - n, n), (r.m = n), (r.k = r.h))
                 : ((r.m += e),
-                  r.m == r.h && (r.m = 0),
-                  r.k < r.h && (r.k += e));
+                    r.m == r.h && (r.m = 0),
+                    r.k < r.h && (r.k += e));
     }
     return 0;
 }
@@ -1998,7 +1999,7 @@ function tn(e, t) {
         (s = o),
         (v = 0);
     try {
-        for (;;)
+        for (; ;)
             switch (n.ot) {
                 case 16180:
                     if (0 == n.G) {
@@ -2015,7 +2016,7 @@ function tn(e, t) {
                     }
                     if (
                         (n.O && (n.O.Bt = -1),
-                        !(1 & n.G) || ((V(8) << 8) + (u >> 8)) % 31)
+                            !(1 & n.G) || ((V(8) << 8) + (u >> 8)) % 31)
                     ) {
                         (e.msg = 'incorrect header check'), (n.ot = 16209);
                         break;
@@ -2026,9 +2027,9 @@ function tn(e, t) {
                     }
                     if (
                         (S(4),
-                        (g = V(4) + 8),
-                        0 == n.v && (n.v = g),
-                        g > 15 || g > n.v)
+                            (g = V(4) + 8),
+                            0 == n.v && (n.v = g),
+                            g > 15 || g > n.v)
                     ) {
                         (e.msg = 'invalid window size'), (n.ot = 16209);
                         break;
@@ -2067,30 +2068,30 @@ function tn(e, t) {
                 case 16184:
                     1024 & n.st
                         ? (N(16),
-                          (n.bt = u),
-                          n.O && (n.O.Ke = u),
-                          512 & n.st && 4 & n.G && (n.dt = p(n.dt, u)),
-                          E())
+                            (n.bt = u),
+                            n.O && (n.O.Ke = u),
+                            512 & n.st && 4 & n.G && (n.dt = p(n.dt, u)),
+                            E())
                         : n.O && (n.O.He = F),
                         (n.ot = 16185);
                 case 16185:
                     if (
                         1024 & n.st &&
                         ((h = n.bt),
-                        h > l && (h = l),
-                        h &&
+                            h > l && (h = l),
+                            h &&
                             (n.O &&
                                 n.O.He &&
                                 n.O.Gt &&
                                 (g = n.O.Ke - n.bt) < n.O.Gt &&
                                 M(n.O.He, g, r, i, h),
-                            512 & n.st &&
+                                512 & n.st &&
                                 4 & n.G &&
                                 (n.dt = W(n.dt, r.subarray(i, i + h), h)),
-                            (l -= h),
-                            (i += h),
-                            (n.bt -= h)),
-                        n.bt)
+                                (l -= h),
+                                (i += h),
+                                (n.bt -= h)),
+                            n.bt)
                     )
                         return m();
                     (n.bt = 0), (n.ot = 16186);
@@ -2101,17 +2102,17 @@ function tn(e, t) {
                         do {
                             (g = r[i + h++]),
                                 n.O &&
-                                    n.O.Ot &&
-                                    n.bt < n.O.Ot &&
-                                    (n.O.Je[n.bt++] = g);
+                                n.O.Ot &&
+                                n.bt < n.O.Ot &&
+                                (n.O.Je[n.bt++] = g);
                         } while (g && h < l);
                         if (
                             (512 & n.st &&
                                 4 & n.G &&
                                 (n.dt = W(n.dt, r.subarray(i, i + h), h)),
-                            (l -= h),
-                            (i += h),
-                            g)
+                                (l -= h),
+                                (i += h),
+                                g)
                         )
                             return m();
                     } else n.O && (n.O.Je = F);
@@ -2123,17 +2124,17 @@ function tn(e, t) {
                         do {
                             (g = r[i + h++]),
                                 n.O &&
-                                    n.O.Pt &&
-                                    n.bt < n.O.Pt &&
-                                    (n.O.Xe[n.bt++] = g);
+                                n.O.Pt &&
+                                n.bt < n.O.Pt &&
+                                (n.O.Xe[n.bt++] = g);
                         } while (g && h < l);
                         if (
                             (512 & n.st &&
                                 4 & n.G &&
                                 (n.dt = W(n.dt, r.subarray(i, i + h), h)),
-                            (l -= h),
-                            (i += h),
-                            g)
+                                (l -= h),
+                                (i += h),
+                                g)
                         )
                             return m();
                     } else n.O && (n.O.Xe = F);
@@ -2205,13 +2206,13 @@ function tn(e, t) {
                 case 16196:
                     if (
                         (N(14),
-                        (n.kt = V(5) + 257),
-                        S(5),
-                        (n.xt = V(5) + 1),
-                        S(5),
-                        (n.vt = V(4) + 4),
-                        S(4),
-                        n.kt > 286 || (!n.Nt && n.xt > 30))
+                            (n.kt = V(5) + 257),
+                            S(5),
+                            (n.xt = V(5) + 1),
+                            S(5),
+                            (n.vt = V(4) + 4),
+                            S(4),
+                            n.kt > 286 || (!n.Nt && n.xt > 30))
                     ) {
                         (e.msg = n.Nt
                             ? 'too many length'
@@ -2221,25 +2222,25 @@ function tn(e, t) {
                     }
                     (n.yt = 0), (n.ot = 16197);
                 case 16197:
-                    for (; n.yt < n.vt; ) N(3), (n.zt[Se[n.yt++]] = V(3)), S(3);
-                    for (; n.yt < 19; ) n.zt[Se[n.yt++]] = 0;
+                    for (; n.yt < n.vt;) N(3), (n.zt[Se[n.yt++]] = V(3)), S(3);
+                    for (; n.yt < 19;) n.zt[Se[n.yt++]] = 0;
                     (n.It = n.Et), (n.et = n.tt = n.It), (n.nt = 7);
                     let c = { Tt: n.It },
                         k = { Tt: n.nt },
                         x = { Tt: 0 };
                     if (
                         ((v = Oe(0, n.zt, 19, c, k, n.Lt, x, n.Nt)),
-                        (n.It = c.Tt),
-                        (n.nt = k.Tt),
-                        v)
+                            (n.It = c.Tt),
+                            (n.nt = k.Tt),
+                            v)
                     ) {
                         (e.msg = 'invalid code lengths set'), (n.ot = 16209);
                         break;
                     }
                     (n.yt = 0), (n.ot = 16198);
                 case 16198:
-                    for (; n.yt < n.kt + n.xt; ) {
-                        for (; (w = n.et[V(n.nt)]), !(w.ft <= a); ) q();
+                    for (; n.yt < n.kt + n.xt;) {
+                        for (; (w = n.et[V(n.nt)]), !(w.ft <= a);) q();
                         if (w.lt < 16) S(w.ft), (n.zt[n.yt++] = w.lt);
                         else {
                             if (16 == w.lt) {
@@ -2252,21 +2253,21 @@ function tn(e, t) {
                             } else
                                 17 == w.lt
                                     ? (N(w.ft + 3),
-                                      S(w.ft),
-                                      (g = 0),
-                                      (h = 3 + V(3)),
-                                      S(3))
+                                        S(w.ft),
+                                        (g = 0),
+                                        (h = 3 + V(3)),
+                                        S(3))
                                     : (N(w.ft + 7),
-                                      S(w.ft),
-                                      (g = 0),
-                                      (h = 11 + V(7)),
-                                      S(7));
+                                        S(w.ft),
+                                        (g = 0),
+                                        (h = 11 + V(7)),
+                                        S(7));
                             if (n.yt + h > n.kt + n.xt) {
                                 (e.msg = 'invalid bit length repeat'),
                                     (n.ot = 16209);
                                 break;
                             }
-                            for (; h--; ) n.zt[n.yt++] = g;
+                            for (; h--;) n.zt[n.yt++] = g;
                         }
                     }
                     if (16209 == n.ot) break;
@@ -2294,10 +2295,10 @@ function tn(e, t) {
                         B = { Tt: D };
                     if (
                         ((v = Oe(2, Z, n.xt, C, T, n.Lt, B, n.Nt)),
-                        (n.It = C.Tt),
-                        (n.rt = T.Tt),
-                        (n.tt = n.It.slice(D)),
-                        v)
+                            (n.It = C.Tt),
+                            (n.rt = T.Tt),
+                            (n.tt = n.It.slice(D)),
+                            v)
                     ) {
                         (e.msg = 'invalid distances set'), (n.ot = 16209);
                         break;
@@ -2310,12 +2311,12 @@ function tn(e, t) {
                         L(), qt(e, s), z(), 16191 == n.ot && (n.Ft = -1);
                         break;
                     }
-                    for (n.Ft = 0; (w = n.et[V(n.nt)]), !(w.ft <= a); ) q();
+                    for (n.Ft = 0; (w = n.et[V(n.nt)]), !(w.ft <= a);) q();
                     if (w._t && !(240 & w._t)) {
                         for (
                             b = w;
                             (w = n.et[b.lt + (V(b.ft + b._t) >> b.ft)]),
-                                !(b.ft + w.ft <= a);
+                            !(b.ft + w.ft <= a);
 
                         )
                             q();
@@ -2340,12 +2341,12 @@ function tn(e, t) {
                         (n.qt = n.bt),
                         (n.ot = 16202);
                 case 16202:
-                    for (; (w = n.tt[V(n.rt)]), !(w.ft <= a); ) q();
+                    for (; (w = n.tt[V(n.rt)]), !(w.ft <= a);) q();
                     if (!(240 & w._t)) {
                         for (
                             b = w;
                             (w = n.tt[b.lt + (V(b.ft + b._t) >> b.ft)]),
-                                !(b.ft + w.ft <= a);
+                            !(b.ft + w.ft <= a);
 
                         )
                             q();
@@ -2390,17 +2391,17 @@ function tn(e, t) {
                     if (n.G) {
                         if (
                             (N(32),
-                            (s -= o),
-                            (e.total_out += s),
-                            (n.wt += s),
-                            4 & n.G && s)
+                                (s -= o),
+                                (e.total_out += s),
+                                (n.wt += s),
+                                4 & n.G && s)
                         ) {
                             let t = f.subarray(_ - s, _);
                             e.i = n.dt = y(n.dt, t, s);
                         }
                         if (
                             ((s = o),
-                            4 & n.G && (n.st ? u : P_(u) >>> 0) != n.dt)
+                                4 & n.G && (n.st ? u : P_(u) >>> 0) != n.dt)
                         ) {
                             (e.msg = 'incorrect data check'), (n.ot = 16209);
                             break;
@@ -2433,7 +2434,7 @@ function tn(e, t) {
     function m() {
         if (
             (L(),
-            n.h ||
+                n.h ||
                 (s != e.avail_out &&
                     n.ot < 16209 &&
                     (n.Nt ? n.ot < 16208 : n.ot < 16206)) ||
@@ -2456,16 +2457,16 @@ function tn(e, t) {
             (e.total_out += s),
             (n.wt += s),
             4 & n.G &&
-                s &&
-                (e.i = n.dt =
-                    y(
-                        n.dt,
-                        e.next_out.subarray(
-                            e.next_out_index - s,
-                            e.next_out_index
-                        ),
-                        s
-                    )),
+            s &&
+            (e.i = n.dt =
+                y(
+                    n.dt,
+                    e.next_out.subarray(
+                        e.next_out_index - s,
+                        e.next_out_index
+                    ),
+                    s
+                )),
             (e.t =
                 n.I +
                 (n.ut ? 64 : 0) +
@@ -2518,7 +2519,7 @@ function tn(e, t) {
         l--, (u += (255 & r[i]) << a), i++, (u >>>= 0), (a += 8);
     }
     function N(e) {
-        for (; a < e; ) q();
+        for (; a < e;) q();
     }
     function V(e) {
         return u & ((1 << e) - 1);
@@ -2557,10 +2558,10 @@ function rn(e) {
     function r(e) {
         try {
             t.release(e);
-        } catch {}
+        } catch { }
     }
     return new U({
-        start() {},
+        start() { },
         transform(i, f) {
             if (!n) {
                 let t = e.Xt(),
@@ -2570,7 +2571,7 @@ function rn(e) {
             }
             let _ = n.o,
                 l = 0;
-            for (; l < i.length; ) {
+            for (; l < i.length;) {
                 let n = N.min(i.length - l, jn),
                     o = i.subarray(l, l + n);
                 for (
@@ -2608,7 +2609,7 @@ function rn(e) {
         flush(i) {
             if (!n) return;
             let f = n.o;
-            for (;;) {
+            for (; ;) {
                 let n = t.acquire(),
                     _ = !1;
                 try {
@@ -2640,7 +2641,7 @@ function rn(e) {
 }
 function an() {
     return new U({
-        start() {},
+        start() { },
         transform(e, t) {
             try {
                 t.enqueue(e.Kt.slice(0));
@@ -2648,7 +2649,7 @@ function an() {
                 e.release();
             }
         },
-        flush() {},
+        flush() { },
     });
 }
 function Vn(e = 'deflate', t) {
@@ -2671,12 +2672,12 @@ function Jn(e = 'deflate') {
     });
 }
 var s_ = class {
-        constructor(e = 'deflate', t) {
-            let n = Vn(e, t);
-            (this.writable = n.writable),
-                (this.readable = n.readable.pipeThrough(an()));
-        }
-    },
+    constructor(e = 'deflate', t) {
+        let n = Vn(e, t);
+        (this.writable = n.writable),
+            (this.readable = n.readable.pipeThrough(an()));
+    }
+},
     x_ = class {
         constructor(e = 'deflate') {
             let t = Jn(e);
