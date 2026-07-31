@@ -1,0 +1,34 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font: 14px/1.6 system-ui, sans-serif; background: #f5f5f5; color: #333; }
+header { background: #2c3e50; color: #fff; padding: 20px; text-align: center; }
+header h1 { font-size: 1.4em; }
+header p { opacity: 0.7; font-size: 0.85em; margin-top: 4px; }
+main { max-width: 1000px; margin: 24px auto; display: flex; gap: 24px; padding: 0 16px; }
+.panel { flex: 1; background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 24px; }
+.panel h2 { font-size: 1.1em; margin-bottom: 16px; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+.form-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.form-row input { flex: 1; padding: 8px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9em; }
+.form-row input:focus { outline: none; border-color: #3498db; }
+.form-row input[type="file"] { padding: 6px; }
+.btn { display: inline-block; padding: 8px 16px; border: none; border-radius: 4px; font-size: 0.85em; cursor: pointer; }
+.btn-primary { background: #3498db; color: #fff; }
+.btn-primary:hover { background: #2980b9; }
+.btn-success { background: #27ae60; color: #fff; }
+.btn-success:hover { background: #219a52; }
+.btn-danger { background: #e74c3c; color: #fff; padding: 2px 8px; font-size: 0.75em; }
+.btn-danger:hover { background: #c0392b; }
+.entry-list { list-style: none; margin: 8px 0; }
+.entry-list li { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 4px; font-size: 0.85em; }
+.entry-list li span { word-break: break-all; flex: 1; }
+.result-list { list-style: none; margin-top: 12px; }
+.result-list li { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 4px; cursor: pointer; font-size: 0.85em; }
+.result-list li:hover { background: #eaf2f8; }
+.result-list .name { font-weight: 500; }
+.result-list .size { color: #999; font-size: 0.8em; margin-left: 12px; white-space: nowrap; }
+.preview { margin-top: 12px; padding: 12px; background: #2c3e50; color: #ecf0f1; border-radius: 6px; font: 12px/1.5 monospace; max-height: 300px; overflow: auto; white-space: pre-wrap; word-break: break-all; display: none; }
+.preview.visible { display: block; }
+.preview h3 { font: 12px/1.5 system-ui; color: #bdc3c7; margin-bottom: 4px; }
+.code-block { margin-top: 16px; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+.code-block summary { padding: 8px 12px; background: #f8f9fa; cursor: pointer; font-size: 0.85em; color: #666; user-select: none; }
+.code-block pre { margin: 0; padding: 12px; background: #2c3e50; color: #ecf0f1; font: 12px/1.5 "Fira Code", "Cascadia Code", monospace; overflow-x: auto; }
+@media (max-width: 640px) { main { flex-direction: column; } }

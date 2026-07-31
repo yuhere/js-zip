@@ -4,26 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-`@yuhere/js-zip` — a JavaScript library for creating and reading `.zip` files, forked from [zip.js](https://github.com/gildas-lormeau/zip.js) (v2025). Used in the "Chrome extension source viewer" extension for CRX file compression/decompression. Targets browser, Node.js, Deno, and Bun.
+`@yuhere/js-zip` — a JavaScript library for creating and reading `.zip` files, forked from [zip.js](https://github.com/gildas-lormeau/zip.js) (v2025). Used in the "Chrome extension source viewer" extension for CRX file compression/decompression. Targets browser and Node.js.
 
 ## Commands
 
 ```bash
-npm run build          # Rollup bundle (src/ → lib/, preserveModules)
-npm run lint           # ESLint on src/
-npm test               # Build, then run tests with c8 coverage
-npm run test-node      # Same as above (build + c8 + node:test)
-npm run test-deno      # Run tests with Deno
-npm run test-bun       # Run tests with Bun
-npm run test-firefox   # Run browser tests in Firefox
-npm run test-chrome    # Run browser tests in Chrome
+npm run build          # Vite library build (src/ → lib/, preserveModules)
+npm test               # Node tests (85 pass, 3 skip)
+npm run test:node      # Same as above
+npm run test:browser   # Browser tests in headless Chromium (87 pass)
+npm run test:coverage  # Node + Browser tests with coverage (coverage/node/, coverage/browser/)
+npm run test:watch     # Watch mode for Node tests
 ```
 
-- `npm test` builds with Rollup then runs all 85 tests via `node:test` with c8 coverage collection. Coverage is collected from `src/**/*` (tests import source directly, not the built lib/).
-- Coverage thresholds (c8): 60% lines/functions/branches/statements. Reports in `coverage/` (text, HTML, lcov).
-- The test runner (`tests/node-runner.js`) runs from the repo root. It mocks `fetch` using `node:fs` to serve files from `tests/data/`.
-- Test files: `tests/all/test-*.js`. Test registry: `tests/tests-data.js`. Add new tests by adding an entry there and creating the script.
-- Rollup config uses `preserveModules: true` — each source module becomes a separate file in `lib/`.
+- `npm test` runs 88 tests via **Vitest** (85 pass, 3 env-skipped in Node). `globals: true` — `it`/`describe`/`expect`/`vi` are available without imports.
+- Coverage: `@vitest/coverage-v8`, thresholds 70/68/48/68. Separate reports in `coverage/node/` and `coverage/browser/`.
+- Config files: `vite.config.js` (build), `vitest.node.config.js` (Node tests), `vitest.browser.config.js` (Browser tests).
+- Node test setup (`tests/setup.js`) mocks `fetch` using `node:fs` to serve files from `tests/data/`.
+- Browser tests run in headless Chromium via `@vitest/browser-playwright`, with no fetch mock — Vite dev server serves test data with Range support.
+- Test files: `test/all/*.spec.js` — self-contained Vitest test files, each contains one `it()` block.
+- Vite build uses `preserveModules: true` + `preserveEntrySignatures: "allow-extension"` — each source module becomes a separate file in `lib/`.
 
 ## Architecture
 
@@ -53,14 +53,14 @@ Root `index.js` is a convenience re-export of `src/index.js`.
 
 ### Build pipeline
 
-Rollup (`rollup.config.js`) bundles `src/index.js` → `lib/` with `preserveModules: true`, keeping each module as a separate file. The `rollup-plugin-esbuild` plugin handles JS/TS transpilation targeting ES2022.
+Vite (`vite.config.js`) bundles `src/index.js` → `lib/` with `preserveModules: true` + `preserveEntrySignatures: "allow-extension"`, keeping each module as a separate file. Targeting ES2022, no minification.
 
 ### Public API
 
 **Core classes** (from `zip-core.js`):
 - `ZipReader` — read zip files. Constructor takes a `Reader` instance. Methods: `getEntries()`, `close()`.
 - `ZipWriter` — write zip files. Constructor takes a `Writer` instance. Methods: `add(name, reader, options?)`, `close()`.
-- `configure(config)` — global configuration (e.g., `workerScripts`, `useWebWorkers`).
+- `configure(config)` — global configuration (e.g., `workerScripts`).
 
 **I/O classes** (from `io.js`):
 - **Readers**: `Reader`, `TextReader`, `BlobReader`, `Data64URIReader`, `Uint8ArrayReader`, `HttpReader`, `HttpRangeReader`, `SplitDataReader`
@@ -82,16 +82,15 @@ The `core/streams/` directory contains transform stream implementations:
 
 ### Test setup
 
-- `tests/tests-data.js` — registry of all test scripts with titles and optional env filters.
-- `tests/node-runner.js` — Node.js runner using `node:test` with `fetch` mocked via `node:fs`.
-- `tests/web-runner.js` — browser runner using iframes.
-- `tests/deno-runner.js`, `tests/bun-runner.js` — Deno and Bun runners.
+- `tests/setup.js` — Node test setup (fetch mock via `vi.fn()`).
+- `test/all/*.spec.js` — self-contained Vitest test files, each with one `it()` block.
+- `vitest.node.config.js` — Node test config (`globals: true`, v8 coverage, thresholds)
+- `vitest.browser.config.js` — Browser test config with Playwright provider and Range-request middleware
 - `tests/data/` — test fixture files (sample zips, lorem text).
-- `tests/all/loader.html` — HTML loader for browser test iframes.
 
 ### Configuration notes
 
 - **ESM only**: `"type": "module"` in package.json. All source uses ES import/export.
-- **TypeScript**: Dev dependencies include TypeScript and types for tooling, but the source is plain `.js`. `tsconfig.types.json` exists for declaration emit only.
-- **Coverage**: `.c8rc.json` covers `src/**/*`, excludes `node_modules/**`.
+- **Plain JavaScript**: Source is `.js` only, no TypeScript dependency.
+- **Coverage**: `vitest.node.config.js` + `vitest.browser.config.js` use `@vitest/coverage-v8`, cover `src/**/*.js`, output to `coverage/node/` and `coverage/browser/`.
 - **CI**: `.github/workflows/npm-publish.yml` handles npm publishing.

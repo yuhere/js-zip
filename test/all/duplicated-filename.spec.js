@@ -1,0 +1,23 @@
+import * as zip from "../../index.js";
+
+const FILENAME = "lorem.txt";
+
+
+it("Duplicated Filename", async () => {
+	zip.configure({ chunkSize: 128 });
+	const zipWriter = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
+	try {
+		await Promise.all([
+			zipWriter.add(FILENAME, new zip.TextReader("")),
+			zipWriter.add(FILENAME, new zip.TextReader(""))
+		]);
+	} catch (error) {
+		if (error.message == zip.ERR_DUPLICATED_NAME) {
+			return;
+		}
+	} finally {
+		await zipWriter.close();
+		// zip.terminateWorkers()
+	}
+	throw new Error();
+});

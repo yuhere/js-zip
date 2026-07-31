@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>@yuhere/js-zip Demo</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+	"imports": {
+		"@yuhere/js-zip": "https://unpkg.com/@yuhere/js-zip@latest/lib/index.js"
+	}
+}
+</script>
+</head>
+<body>
+
+<header>
+	<h1>@yuhere/js-zip</h1>
+	<p>Create and read .zip files in the browser</p>
+</header>
+
+<main>
+	<!-- === Create ZIP panel === -->
+	<section class="panel">
+		<h2>Create a zip file</h2>
+		<div class="form-row">
+			<input id="entry-name" type="text" placeholder="Filename (e.g. hello.txt)">
+			<input id="entry-content" type="text" placeholder="Content">
+		</div>
+		<div class="form-row">
+			<button class="btn btn-primary" id="add-entry">Add Entry</button>
+		</div>
+		<ul class="entry-list" id="entry-list"></ul>
+		<button class="btn btn-success" id="create-zip" disabled>Download zip</button>
+
+		<details class="code-block">
+			<summary>View source — create zip</summary>
+<pre><code>import { BlobWriter, TextReader, ZipWriter } from "@yuhere/js-zip";
+
+const writer = new ZipWriter(new BlobWriter("application/zip"));
+await writer.add("hello.txt", new TextReader("Hello world!"));
+const blob = await writer.close();
+// → download blob as demo.zip</code></pre>
+		</details>
+	</section>
+
+	<!-- === Read ZIP panel === -->
+	<section class="panel">
+		<h2>Read a zip file</h2>
+		<div class="form-row">
+			<input id="zip-file" type="file" accept=".zip,application/zip">
+		</div>
+		<ul class="result-list" id="result-list"></ul>
+		<div class="preview" id="preview"></div>
+
+		<details class="code-block">
+			<summary>View source — read zip</summary>
+<pre><code>import { BlobReader, TextWriter, ZipReader } from "@yuhere/js-zip";
+
+const reader = new ZipReader(new BlobReader(file));
+const entries = await reader.getEntries();
+const text = await entries[0].getData(new TextWriter());
+// → text contains the file content</code></pre>
+		</details>
+	</section>
+</main>
+
+<script type="module">
+import {
+	BlobReader, BlobWriter, TextReader, TextWriter,
+	ZipReader, ZipWriter,
+} from "@yuhere/js-zip";
+
+// ===== Create Panel =====
+const entries = [];
+
+document.getElementById("add-entry").addEventListener("click", () => {
+	const name = document.getElementById("entry-name").value.trim();
+	const content = document.getElementById("entry-content").value;
+	if (!name) return;
+	entries.push({ name, content });
+	document.getElementById("entry-name").value = "";
+	document.getElementById("entry-content").value = "";
+	renderEntries();
+});
+
+function renderEntries() {
+	const list = document.getElementById("entry-list");
+	const btn = document.getElementById("create-zip");
+	list.innerHTML = entries.map((e, i) =>
+		`<li><span>${esc(e.name)}</span> <button class="btn btn-danger" data-i="${i}">×</button></li>`
+	).join("");
+	btn.disabled = entries.length === 0;
+}
+
+document.getElementById("entry-list").addEventListener("click", (e) => {
+	if (e.target.dataset.i != null) {
+		entries.splice(Number(e.target.dataset.i), 1);
+		renderEntries();
+	}
+});
+
+document.getElementById("create-zip").addEventListener("click", async () => {
+	const writer = new ZipWriter(new BlobWriter("application/zip"));
+	for (const { name, content } of entries) {
+		await writer.add(name, new TextReader(content));
+	}
+	const blob = await writer.close();
+	download(blob, "demo.zip");
+});
+
+// ===== Read Panel =====
+document.getElementById("zip-file").addEventListener("change", async (e) => {
+	const file = e.target.files[0];
+	if (!file) return;
+	const reader = new ZipReader(new BlobReader(file));
+	const zipEntries = await reader.getEntries();
+	const list = document.getElementById("result-list");
+	list.innerHTML = zipEntries.map((entry, i) =>
+		`<li data-i="${i}">
+			<span class="name">${esc(entry.filename)}</span>
+			<span class="size">${formatSize(entry.uncompressedSize)}</span>
+		</li>`
+	);
+	list.addEventListener("click", async (ev) => {
+		const li = ev.target.closest("li");
+		if (!li) return;
+		const entry = zipEntries[Number(li.dataset.i)];
+		const text = await entry.getData(new TextWriter());
+		const preview = document.getElementById("preview");
+		preview.innerHTML = `<h3>${esc(entry.filename)}</h3>${esc(text)}`;
+		preview.classList.add("visible");
+	});
+	await reader.close();
+});
+
+// ===== Helpers =====
+function download(blob, filename) {
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement("a");
+	a.href = url; a.download = filename;
+	a.click(); URL.revokeObjectURL(url);
+}
+
+function formatSize(bytes) {
+	return bytes < 1024 ? `${bytes} B`
+		: bytes < 1024 * 1024 ? `${(bytes / 1024).toFixed(1)} KB`
+		: `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function esc(s) {
+	return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+</script>
+
+</body>
+</html>
