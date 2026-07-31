@@ -1,8 +1,8 @@
 # @yuhere/js-zip
 
-[![npm](https://img.shields.io/badge/npm-v1.0.0-blue)](https://www.npmjs.com/package/@yuhere/js-zip)
+[![npm](https://img.shields.io/badge/npm-v2.8.26-blue)](https://www.npmjs.com/package/@yuhere/js-zip)
 [![npm downloads](https://img.shields.io/npm/dm/@yuhere/js-zip.svg)](https://www.npmjs.com/package/@yuhere/js-zip)
-[![coverage](https://img.shields.io/badge/coverage-71%25-yellowgreen)](https://www.npmjs.com/package/@yuhere/js-zip)
+[![coverage](https://img.shields.io/badge/coverage-73%25-yellowgreen)](https://www.npmjs.com/package/@yuhere/js-zip)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![ESM](https://img.shields.io/badge/ESM-only-orange.svg)](https://nodejs.org/api/esm.html)
 
